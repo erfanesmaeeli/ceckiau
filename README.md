@@ -1,2 +1,3 @@
 # ceckiau
-CECkiau.ir - This is my first experience with Django
+This is my first experience with Django.
+Developed at 2018
