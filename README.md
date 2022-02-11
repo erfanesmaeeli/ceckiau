@@ -1,2 +1,2 @@
 # ceckiau
-CECkiau.ir - This my first experience with Django
+CECkiau.ir - This is my first experience with Django
