@@ -1,0 +1,215 @@
+{% extends "panel/base.html" %}
+{% load static %}
+{% load jformat %}
+{% load crispy_forms_tags %}
+{% load form_tags %}
+
+
+{% block css %}
+{{ block.super }}
+{% comment %} Tiny Text Editor CDN {% endcomment %}
+<!--<script src="https://cdn.tiny.cloud/1/q8eppmabde0fldad8ohfccqsmcr8q0mb1v308nbe81rvew8c/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>-->
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 grid-margin">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex align-items-end flex-wrap">
+        <div class="ml-md-3 ml-xl-5">
+          <h2>ویرایش پست</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex mt-3 erfan-breadcrumb shadow-sm">
+      <a href="/" class="d-flex"><i class="align-self-center mdi mdi-home text-muted cec-text-pyblue"></i></a>
+      <p class="align-self-center text-muted mb-0 hover-cursor">&nbsp;/&nbsp;<a href="/panel/" class="cec-text-pyblue">داشبورد</a>&nbsp;/&nbsp;</p>
+      {% comment %} <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;بلاگ&nbsp;/&nbsp;</a> </p> {% endcomment %}
+      {% if request.user.is_superuser %}
+      <p class="align-self-center text-primary mb-0"> &nbsp;<a href="{% url 'app-main:all-posts' %}" class="cec-text-pyblue">مشاهده پست‌ها</a>&nbsp;/&nbsp; </p>
+      {% else %}
+      <p class="align-self-center text-primary mb-0"> &nbsp;<a href="{% url 'app-main:all-posts' %}" class="cec-text-pyblue">مشاهده پست‌های من</a>&nbsp;/&nbsp; </p>
+      {% endif %}
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;{{post.title}}&nbsp;&nbsp;</a> </p>
+    </div>
+
+  </div>
+</div>
+
+{% if admin_message %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body cec-text-pyblue">
+        <span class="mdi mdi-message-alert-outline"></span>
+        پیام مدیر سایت:
+        <div class="card-body mt-3 erfan-chat-1">
+          سلام پسرم در محتواهایت دقت بیشتری کن
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body cec-text-pyblue">
+        <div class="card-body mr-0 pr-0 pt-2 pb-md-2 pb-0">
+          <h6 class="d-table d-md-inline mb-3 mb-md-0 "><span class="mdi mdi-calendar-check"></span> تاریخ ایجاد:&nbsp;<p class="mt-md-1 mt-1 d-md-inline d-block ml-5 mb-md-0 text-dark font-weight-light">{{post.DateCreate | jformat:"%d / %m / %Y"}} - {{post.TimeCreate |time:"H:i"}}</p> </h6>
+
+          <h6 class="d-table d-md-inline mb-3 mb-md-0 "><span class="mdi mdi-calendar-check"></span> تاریخ آخرین ویرایش:&nbsp;<p class="mt-md-1 mt-1 d-md-inline d-block ml-5 mb-md-0 text-dark font-weight-light">{{post.LastEdit | jformat:"%d / %m / %Y - %H:%M"}}</p> </h6>
+
+          <h6 class="d-table d-md-inline mb-3 mb-md-0 "><span class="mdi mdi-lightbulb-outline"></span> وضعیت:&nbsp;<p class="mt-md-1 mt-1 d-md-inline d-block ml-5 mb-md-0 text-dark font-weight-light">{{post.get_status}}</p> </h6>
+          <h6 class="d-table d-md-inline mb-md-0 "><span class="mdi mdi-eye"></span> انتشار در سایت: <p class="mt-md-0 mt-1 d-md-inline d-block ml-5 mb-0 text-dark font-weight-light">
+            {% if post.publish and post.get_status == 'تایید شده' %}
+            بله
+            {% elif post.publish %}
+            خیر (منتظر تایید مدیر)
+            {% else %}
+            خیر (پیش‌نویس شده توسط نویسنده)
+            {% endif %}
+          </h6>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ form.fields|get_label:key|safe }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% elif formset.total_error_count %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% if formset.non_form_errors %}
+                {{ formset.non_form_errors }}
+            {% endif %}
+            {% for form in formset.forms %}
+                {% if form.errors %}
+                    Form number {{ forloop.counter }}:
+                    <ul class="errorlist">
+                    {% for key, error in form.errors.items %}
+                        <li>{{form.fields|get_label:key}}
+                            <ul class="errorlist">
+                                <li>{{error}}</li>
+                            </ul>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+{% endif %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form class="forms-sample" id="your-form" action="." method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form.media }}
+
+          <div class="form-check form-check-flat form-check-primary mb-4">
+            <label class="form-check-label">
+              در سایت نمایش داده شود
+              {{form.publish}}
+            </label>
+            <span class="text-muted text-small">(درصورت غیرفعال گذاشتن این قسمت، پست شما بصورت پیش‌نویس ذخیره می‌شود)</span>
+          </div>
+
+          <div class="form-check form-check-flat form-check-primary mb-4">
+            <label class="form-check-label">
+              نام نویسنده نمایش داده شود
+              {{form.show_author}}
+            </label>
+            <span class="text-muted text-small">(درصورت غیرفعال گذاشتن این قسمت، نام نویسنده به «انجمن علمی کامپیوتر» تغییر میکند)</span>
+          </div>
+
+          <div class="form-group mb-4">
+
+            {{form.slug|as_crispy_field}}
+          </div>
+
+          <div class="form-group mb-4">
+            <!-- <label for="exampleInputName1">عنوان</label> -->
+            {{form.title |as_crispy_field}}
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-12 mx-auto mb-2">
+              <div class="form-group select-box">
+                <!-- <label for="exampleSelectGender">دسته‌بندی</label> -->
+                {{form.category |as_crispy_field}}
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mx-auto mb-2">
+              <div class="form-group">
+                {% if not user.is_superuser %}
+                <label for="exampleInputName1"><span class="mdi mdi-account-outline icon-sm"></span> نویسنده</label>
+                <input type="text" class="form-control" value="{{post.author_name}}" disabled>
+                {% endif %}
+                {{form.author |as_crispy_field}}
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mx-auto mb-2">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-image-outline icon-sm"></span> عکس پست*</label>
+                <div class="file-upload">
+                  <div class="file-select">
+                    <div class="file-select-button" id="fileName">انتخاب کنید</div>
+                    <div class="file-select-name" id="noFile">هیچ فایلی انتخاب نشده است</div>
+                    {{form.image |as_crispy_field}}
+                  </div>
+                  {% if post.image %}
+                  <div class="d-flex">
+                    <a href="{{post.image.url}}" target="_blank" class="mb-0 mr-auto text-left pl-1">{{post.image}}</a>
+                  </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-5">
+            <!-- <label for="exampleTextarea1">محتوای پست</label> -->
+              {{form.text |as_crispy_field}}
+          </div>
+
+          <div class="form-group">
+            <!-- <label for="exampleTextarea-met">محتوای متاتگ(SEO)</label> -->
+            {{form.meta_description |as_crispy_field}}
+          </div>
+
+          <button type="submit" class="btn btn-success mr-2">ذخیره تغییرات</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+{{ block.super }}
+<script src="{% static "panel/js/tiny-editor.js" %}" charset="utf-8"></script>
+{% endblock %}

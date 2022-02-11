@@ -1,0 +1,205 @@
+{% extends "panel/base.html" %}
+{% load static %}
+{% load jformat %}
+
+
+{% block css %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 grid-margin">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex align-items-end flex-wrap">
+        <div class="ml-md-3 ml-xl-5">
+          {% if user.is_superuser %}
+          <h2>مشاهده پست‌ها</h2>
+          {% else %}
+          <h2>مشاهده پست‌های من</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex mt-3 erfan-breadcrumb shadow-sm">
+      <a href="/"><i class="align-self-center mdi mdi-home text-muted cec-text-pyblue"></i></a>
+      <p class="align-self-center text-muted mb-0 hover-cursor">&nbsp;/&nbsp;<a href="/panel/" class="cec-text-pyblue">داشبورد</a>&nbsp;/&nbsp;</p>
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;بلاگ&nbsp;/&nbsp;</a> </p>
+      {% if user.is_superuser %}
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;مشاهده پست‌ها&nbsp;&nbsp;</a> </p>
+      {% else %}
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;مشاهده پست‌های من&nbsp;&nbsp;</a> </p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="blog_table" class="table">
+            <thead>
+              <tr>
+                <th>عکس پست</th>
+                <th>عنوان</th>
+                <th>دسته‌بندی</th>
+                <th>نویسنده</th>
+                <th>وضعیت</th>
+                <th>انتشار</th>
+                <th>اقدامات</th>
+                <th>تاریخ ایجاد</th>
+                <th>آخرین ویرایش</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for post in blog %}
+              <tr>
+                <td  style="min-width:100px;max-width:100px">
+                  <a href="{% url 'app-main:show-post' id=post.id %}">
+                    <img class="erfan-table-image" src="{{post.image.url}}" alt="{{post.id}}" loading="lazy">
+                  </a>
+                </td>
+                <td class="text-right">{{post.title |truncatechars:35}}</td>
+                <td class="text-center">{{post.get_category}}</td>
+                <td class="text-center">{{post.author_name}}</td>
+                {% if user.is_superuser %}
+                      <td class="text-center">
+                        {% if post.get_status == 'در انتظار تایید' %}
+                          <span data-toggle="modal" data-target="#status_post_{{post.id}}" class="text-center erfan-badge badge-warning erfan-cursor-pointer">{{post.get_status}}</span>
+                        {% elif post.get_status == 'تایید شده' %}
+                          <span data-toggle="modal" data-target="#status_post_{{post.id}}" class="text-center erfan-badge badge-success erfan-cursor-pointer">{{post.get_status}}</span>
+                        {% elif post.get_status == 'عدم تایید' %}
+                          <span data-toggle="modal" data-target="#status_post_{{post.id}}" class="text-center erfan-badge badge-danger erfan-cursor-pointer">{{post.get_status}}</span>
+                        {% elif post.get_status == 'پیش‌نویس' %}
+                          <span data-toggle="modal" data-target="#status_post_{{post.id}}" class="text-center erfan-badge badge-info erfan-cursor-pointer">{{post.get_status}}</span>
+                        {% endif %}
+                      </td>
+                {% else %}
+                      <td class="text-center">
+                        {% if post.get_status == 'در انتظار تایید' %}
+                          <span class="text-center erfan-badge badge-warning">{{post.get_status}}</span>
+                        {% elif post.get_status == 'تایید شده' %}
+                          <span class="text-center erfan-badge badge-success">{{post.get_status}}</span>
+                        {% elif post.get_status == 'عدم تایید' %}
+                          <span class="text-center erfan-badge badge-danger">{{post.get_status}}</span>
+                        {% elif post.get_status == 'پیش‌نویس' %}
+                          <span class="text-center erfan-badge badge-info">{{post.get_status}}</span>
+                        {% endif %}
+                      </td>
+                {% endif %}
+
+                <td class="text-center">
+                  {% if post.publish and post.get_status == 'تایید شده'%}
+                    <span data-toggle="modal" data-target="#publish_modal" class="mdi mdi-checkbox-marked-circle-outline icon-md text-success"style="cursor:pointer"></span>
+                  {% else%}
+                    <span data-toggle="modal" data-target="#publish_modal" class="mdi mdi-close-circle-outline icon-md text-danger"style="cursor:pointer"></span>
+                  {% endif %}
+                </td>
+                <td class="text-center">
+                    <a href="{{post.get_absolute_url}}" target="_blank" class="mdi mdi-eye icon-md text-muted erfan_table_icon_hover"></a>
+
+                    <a href="{% url 'app-main:show-post' id=post.id %}" class="mdi mdi-pencil icon-md text-muted erfan_table_icon_hover"></a>
+
+                    <span data-toggle="modal" data-target="#delete_post_{{post.id}}" class="mdi mdi mdi-delete icon-md text-danger erfan_table_icon_hover"></span>
+                </td>
+
+                <td class="text-center">{{post.DateCreate |jformat:"%d / %m / %Y"}} - {{post.TimeCreate |time:"H:i"}}</td>
+
+                <td class="text-center">{{post.LastEdit | jformat:"%d / %m / %Y - %H:%M"}}</td>
+              </tr>
+              <!--Delete Post Modal -->
+                <div class="modal fade" id="delete_post_{{post.id}}" tabindex="-1" aria-labelledby="delete_post_{{post.id}}ModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-center cec-text-pyblue mx-auto d-flex" id="delete_post_{{post.id}}ModalLabel"><span class="mdi mdi mdi-delete icon-md align-self-center icon-sm"></span>&nbspحذف پست </h5>
+                      </div>
+                      <div class="modal-body text-justify text-right">
+                        <p class="mt-3 mb-0">آیا از حذف شدن پست <a href="{% url 'app-main:show-post' id=post.id %}">{{post.title}}</a> از نویسنده {{post.author_name}} مطمئن هستید؟ </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal">انصراف</button>
+                        <form action="{% url 'app-main:delete-post' id=post.id %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger mr-auto"> حذف </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Status Post Modal (for admin) -->
+                  <div class="modal fade" id="status_post_{{post.id}}" tabindex="-1" aria-labelledby="status_post_{{post.id}}ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                          <h5 class="modal-title text-center cec-text-pyblue mx-auto d-flex" id="status_post_{{post.id}}ModalLabel">تغییر وضعیت پست <span class="mdi mdi mdi-pencil icon-md align-self-center icon-sm"></span></h5>
+
+                        </div>
+                        <div class="modal-body text-justify text-right">
+                        <p>نام پست: <a href="{% url 'app-main:show-post' id=post.id %}">{{post.title}}</a> </p>
+                        <p>نام نویسنده: {{post.author_name}}</p>
+                        <p>وضعیت پست: {{post.get_status}}</p>
+                        {% if post.publish and post.get_status == 'تایید شده' %}
+                            <p>وضعیت انتشار در سایت: درحال انتشار</p>
+                        {% elif post.publish and post.get_status != 'تایید شده'  %}
+                            <p>وضعیت انتشار در سایت: منتشر نمی‌باشد! (در انتظار تایید مدیر)</p>
+                        {% else %}
+                        <p>وضعیت انتشار در سایت: منتشر نمی‌باشد (پیش‌نویس توسط نویسنده)</p>
+                        {% endif %}
+                        </div>
+                        <div class="modal-footer d-flex">
+                          {% comment %} <button type="button" class="btn btn-secondary mx-auto d-none d-lg-block" data-dismiss="modal">انصراف</button> {% endcomment %}
+                          <form action="{% url 'app-main:change-status-post' id=post.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="cec_post_waitng" value="True" class="btn btn-warning mr-0 mx-md-auto"> در انتظار </button>
+                            <button type="submit" name="cec_post_accepted" value="True" class="btn btn-success m-1 mx-auto"> تایید </button>
+                            <button type="submit" name="cec_post_not_accepted" value="True" class="btn btn-danger m-1 mx-auto"> عدم تایید </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              {% endfor %}
+              <!--Publish Modal -->
+                <div class="modal fade" id="publish_modal" tabindex="-1" aria-labelledby="publish_modalModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-center cec-text-pyblue mx-auto d-flex" id="publish_modalModalLabel"><span class="mdi mdi-eye align-self-center icon-sm"></span>&nbspانتشار در سایت </h5>
+                      </div>
+                      <div class="modal-body text-justify text-right">
+                        <p class="m-0">جهت انتشار پست در سایت میبایست هم گزینه انتشار در سایت را فعال کرده باشید و هم پست شما توسط مدیر سایت تایید شده باشد.</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">فهمیدم</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </tbody>
+          </table>
+          <br>
+          <p class="text-muted">
+            <span data-toggle="modal" data-target="#publish_modal" class="mdi mdi-checkbox-marked-circle-outline icon-sm text-success"></span>
+            مرتب‌سازی شده بر اساس تاریخ ایجاد
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+{{ block.super }}
+{% endblock %}

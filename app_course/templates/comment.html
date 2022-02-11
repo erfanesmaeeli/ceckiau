@@ -1,0 +1,86 @@
+<div class="row mt-3">
+	<h4 class="mt-2 ml-3"><b><i class="far fa-comment-alt"></i> دیدگاه های ارزشمند شما</b></h4>
+		<div class="col-lg-11 col-md-11 col-12 mx-auto pt-3 my_comment_panel" >
+			{% if user.is_authenticated %}
+			<form action="">
+				<div class="form-group">
+					<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="دیدگاه خود را اینجا بنویسید .." required></textarea>
+				</div>
+				<button type="submit" class="btn mybtn-warning btn-warning mb-4" style="width:150px">ثبت دیدگاه</button>
+
+			</form>
+			{% else %}
+			<div class="alert alert-warning" role="alert">
+					برای ارسال دیدگاه ابتدا وارد سایت شوید !
+			</div>
+			{% endif %}
+			<div class="card">
+				<div class="card-body my-card-comment">
+					<div class="row">
+						<div class="col-lg-1 col-md-1 col-3">
+							<img src="/static/img/profile-avatar.jpg" height="80px" width="80px" alt="">
+						</div>
+						<div class="col-lg-4 col-md-4 col-8 justify-content-center align-self-center ">
+							<h4 class="author-comment"> &nbsp  علی اسمعیلی</h4>
+						</div>
+						<p>
+							سلام خسته نباشید.
+							دوره ی بسیار مفید و خوبی بود. 
+							فقط یه سوال برای پایتون پیشرفته هم دوره برگزار میکنید شما ؟ 
+						</p>
+					</div>
+
+					<div class="col-lg-10 col-12 mx-auto pt-3 admin-comment">
+						<div class="row">
+							<div class="col-lg-1 col-md-1 col-3 mr-2  ">
+								<img src="/static/img/profile-avatar.jpg" height="80px" width="80px" alt="">
+							</div>
+							<div class="col-lg-4 col-md-4 col-8  justify-content-center align-self-center ">
+								<h4 class="author-comment"> &nbsp  مدیر سایت</h4>
+							</div>
+							<p class="mb-0">
+									سلام و ارادت ;
+									نظر لطف شماست . انشالله در آینده حتما دوره پایتون پیشرفته رو هم برگزار خواهیم کرد. 
+									همیشه موفق باشید :)
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
+	</div>
+
+
+<style>
+.my-card-comment img{
+	border-radius: 50px;
+	border:solid 2px #ff7200;
+	padding: 3px;
+}
+.author-comment{
+	display: contents;
+	padding-right: 10px;
+	color: rgb(68, 68, 68);
+}
+.my-card-comment p{
+	font-family: 'IRANSans-Regular';
+	text-align: justify;
+	padding: 15px 25px 10px 25px;
+	line-height: 2;
+	font-size: 15px;
+}
+.my-card-comment .admin-comment{
+	background-color: rgb(236, 235, 235);
+	 margin-left:0 !important;
+	border-radius: 8px;
+	border: solid 1px #ff7200;
+}
+
+.my_comment_panel .form-control:focus{
+	border-color: #ff7200;
+    outline: 0;
+	box-shadow: 0 0 0 0.5px #ff7200d1;
+	transition: 0.6s ease;
+	color :black;
+}
+</style>

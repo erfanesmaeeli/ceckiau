@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+{% load jformat %}
+
+{% block css-link %}
+{{ block.super }}
+<link rel="stylesheet" href={% static 'css/course-detail.css' %}>
+{% endblock css-link %}
+
+{% block content %}
+<br><br><br><br><br class="hide-in-mobile">
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">	
+		<ol class="breadcrumb">
+			<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p> 
+			<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'app-course:courses' %}" class="cec-text-pyblue">دوره های آموزشی</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{course.title}} </li>
+		</ol>
+	</nav>
+</div>
+
+<div class="container">
+	<br>
+	<div class="row">
+		<h3 class="text-dark course_title"><b>	{{course.title}}</b></h3>
+	</div>
+	<div class="row mt-3 pb-2">
+		<div class="mr-5 course_detail_menu pb-2 text-secondary"><i class="far fa-user d-inline"></i>  مدرس : {{course.teacher}} </div>
+		<div class="mr-5 course_detail_menu pb-2 text-secondary"><i class="far fa-clock d-inline"></i>  زمان قرارگیری : {{course.DateCreate| jformat:"%d / %m / %Y"}} </div>
+		<div class="course_detail_menu text-secondary"><i class="far fa-folder" aria-hidden="true"></i>  دسته بندی : {{course.category}} </div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-lg-3 col-md-5 col-10 mx-auto">
+			{% if not user.is_authenticated %}
+			<div class="card my_course_card_right cec-text-white mb-4">
+					<div class="card-header-pyblue card-header"><i class="fas fa-user-lock"></i> برای دسترسی به این دوره &nbsp نیاز است ابتدا وارد سایت شوید.</div>
+					<div class="card-body cec-text-pyblue">
+						<h5><b><i class="fas fa-coins"></i> قیمت دوره : </b> رایگان</h5>
+						<h5><b><i class="fas fa-sync-alt"></i> وضعیت دوره : </b> درحال برگزاری</h5>
+						<h5><b><i class="fas fa-film"></i> تعداد قسمت ها : </b> 8</h5>
+						<hr>
+						<a href="#"><button class="btn cec-btn-pyblue d-flex mx-auto justify-content-center" data-toggle="modal" data-target="#loginModal" style="width: 180px;"> وارد سایت شوید </button>
+						</a>
+					</div>
+			</div>
+			{% else %}
+			<div class="card my_course_card_right text-light mb-4 ">
+					<div class="card-header-green card-header">{{user.profile.fname}} عزیز هم اکنون میتوانید در این دوره شرکت نمایید <i class="fas fa-check"></i></div>
+					<div class="card-body text-dark">
+						<h5><b><i class="fas fa-coins"></i> قیمت دوره : </b> رایگان</h5>
+						<h5><b><i class="fas fa-sync-alt"></i> وضعیت دوره : </b> {{course.state}}</h5>
+						<h5><b><i class="far fa-folder-open"></i> تعداد قسمت ها : </b> {{sessions_count}}</h5>
+					</div>
+			</div>
+			{% endif %}
+		</div>	
+		<div class="col-lg-9 col-md-11 col-12 mx-auto mb-3">
+			<div class="card my_course_card_left shadow-sm">
+				<div class="card-body">
+					<div class="row">
+						
+						<div class="com-lg-8 col-md-8 col-11 p-0 mx-auto">
+								<img src="{{course.image.url}}" alt="{{course.title}}">
+						</div>
+						<!-- <div class="col-lg-6 col-md-6 col-12">
+								<div class="my_icons justify-content-center align-content-center mx-auto d-flex mb-4">
+										<i class="far fa-heart shadow-sm "></i>
+										<i data-toggle="modal" data-target="#sharingModalCenter" class="fas fa-share-alt ml-3 shadow-sm"></i>
+									
+								</div>
+						</div> -->
+					</div>
+					<br>
+					<h4 class="mb-2 mt-1 cec-text-green"><i class="fas fa-pen-square"></i>  توضیحات</h4>
+					<p>
+							{{course.description |safe}}
+					</p>
+				</div>
+			</div>
+		</div>
+		<h4 class="mt-2 ml-3"><b><i class="far fa-folder-open"></i> جلسات این دوره</b></h4>
+			{% if not user.is_authenticated %}
+				<div class="container d-flex justify-content-center mt-4">
+					<div class="card border-dark mb-3 w-md-50 my-alert-card" >
+					<div class="card-header text-center">-- شما قادر به دیدن این بخش نمی باشید --</div>
+					<div class="card-body text-info">
+						<h3 class="card-title text-center cec-text-pyblue">ابتدا وارد سایت شوید</h3>
+						<div class="container pt-2 justify-content-center d-flex mx-auto">
+							<button class="btn cec-btn-pyblue d-inline" data-toggle="modal" data-target="#loginModal" style="width: 150px"><i class="fas fa-user-tie"></i> ورود</button>
+						</div>
+					</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="col-lg-11 col-md-11 col-12 mx-auto pt-3">
+				<ul class="list-group">
+					{% for session in course_session %}
+					<li class="list-group-item course_session pr-3">
+						<div class="row align-items-center h-100">
+							<div class="col-lg-9 col-md-9 col-12 pr-1 pl-1">
+								<a href="{{session.get_absolute_url}}" class="course_session_title">
+									<h4 class="number-icon d-inline hide-in-mobile shadow-sm"><i class="fas fa-unlock"></i></h4>
+									<h4 class="m-0 d-inline">{{session.title}}</h4>
+								</a>
+							</div>
+							
+							<div class="col-lg-3 col-md-3 p-0 pr-3 justify-content-center align-self-center d-flex hide-in-tablet">
+								<h4 class=" pt-2 course_session_time ">{{session.length}}</h4>
+							</div>
+							
+						</div>
+					</li>
+					{% endfor %}
+				</ul>		
+			</div>
+			{% endif %}
+	</div>
+
+</div>
+
+{% endblock content %}

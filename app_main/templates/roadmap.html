@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% load jformat %}
+{% load erfan_calendar %}
+
+{% block css-link %}
+	{{ block.super }}
+	<link rel="stylesheet" href={% static "css/roadmap.css" %}>
+{% endblock css-link %}
+
+{% block content %}
+<br> <br> <br> <br> <br class="hide-in-mobile">
+<div class="container-fluid">
+		<nav aria-label="breadcrumb">	
+			<ol class="breadcrumb">
+				<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p> 
+				<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+				<li class="breadcrumb-item active" aria-current="page">نقشه راه آینده</li>
+			</ol>
+		</nav>
+	<br>
+	<div class="my_roadmap mx-auto">
+		<h5>آخرین به روز رسانی :&nbsp {{ roadmap_completed.0.DateCreate | jalali_date }}</h5>
+		<br>
+		<p>ما تلاش می‌کنیم تا سایت انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج را بیشتر به آنچه که مورد نیاز شما دانشجویان عزیز است تبدیل کنیم. در این صفحه نقشه راه آینده انجمن را منتشر می‌کنیم. به این نکته توجه کنید که امکان دارد در شرایط خاص و رو به رو شدن با چالش‌های جدید این اولویت بندی تغییر کند. اما سعی می‌کنیم تا حد امکان سایت انجمن را طبق این لیست توسعه دهیم.</p>
+		<p class="text-muted">اگر به چیزی نیاز دارید که در لیست نیست می‌توانید از صفحه <a href="" data-toggle="modal" data-target="#contactModal">تماس با ما</a>
+			آن را با ما در میان بگذارید.</p>
+
+		<div class="card my_roadmap_card blue mb-5">
+			<div class="card-body">
+				<h4 class="card-title"><i class="fas fa-fire"></i> امکاناتی که در حال حاضر روی آن کار می‌کنیم:</h4>
+				{% for item in roadmap %}
+					{% if item.state == 2 %}
+				<p class="card-text"><i class="far fa-square"></i>&nbsp {{ item.text }}</p>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="card my_roadmap_card purple mb-5">
+				<div class="card-body">
+					<h4 class="card-title"><i class="fas fa-clock"></i> امکاناتی که در آینده به سراغ آن‌ها خواهیم رفت:</h4>
+					{% for item in roadmap %}
+					{% if item.state == 3 %}
+				<p class="card-text"><i class="far fa-square"></i>&nbsp {{ item.text }}</p>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="card my_roadmap_card green mb-4">
+				<div class="card-body">
+					<h4 class="card-title mb-4"><i class="fas fa-check-double"></i> موارد به اتمام رسیده:</h4>
+					{% for item in roadmap_completed %}
+					<div class="">
+<!-- 						<h5>{{ item.DateCreate|jformat:"%A %d %B %Y"  }}</h5> -->
+						<a class="item_done" href="{{ item.link }}"><p class="card-text"><i class="fas fa-check-square"></i>&nbsp {{ item.text }}</p></a>
+					</div>
+				{% endfor %}
+						
+				</div>
+		</div>
+	
+	
+	</div>
+</div>
+{% endblock content %}

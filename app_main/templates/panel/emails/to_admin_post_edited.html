@@ -1,0 +1,17 @@
+{% load jformat %}
+
+{% autoescape off %}
+{{user.first_name}} {{user.last_name}} پست خود را ویرایش و تکمیل کرده است. جهت انتشار در سایت نیازمند تایید مدیر سایت می‌باشد.
+
+عنوان پست: {{post.title}}
+آدرس پست در پنل مدیریت: https://ceckiau.ir{% url 'app-main:show-post' id=post.id %}
+تاریخ ایجاد: {{post.DateCreate | jformat:"%d / %m / %Y"}} - {{post.TimeCreate |time:"H:i"}}
+تاریخ آخرین ویرایش: {{post.LastEdit | jformat:"%d / %m / %Y - %H:%M"}}
+
+وضعیت پست: {{post.get_status}}{% if post.show_author %}
+نمایش نام نویسنده در سایت: بله{% else %}نمایش نام نویسنده در سایت: خیر{% endif %}
+
+
+انجمن علمی مهندسی کامپیوتر
+دانشگاه آزاد اسلامی واحد کرج
+{% endautoescape %}

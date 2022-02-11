@@ -1,0 +1,26 @@
+{% load jformat %}
+
+{% autoescape off %}
+سلام {{user.first_name}} {{user.last_name}} عزیز
+پست شما توسط مدیر سایت تایید شده است
+
+در صورت نیاز به تغییر و عدم نمایش در سایت گزینه انتشار در سایت را غیرفعال کنید تا پست شما بصورت پیش نویس ذخیره شود.
+
+باتشکر از ذهن خلاق شما جهت ایجاد این پست.
+
+عنوان پست: {{post.title}}
+آدرس پست در پنل مدیریت: https://ceckiau.ir{% url 'app-main:show-post' id=post.id %}
+آدرس پست در بلاگ سایت: https://ceckiau.ir{{ post.get_absolute_url }}
+تاریخ ایجاد: {{post.DateCreate | jformat:"%d / %m / %Y"}} - {{post.TimeCreate |time:"H:i"}}
+تاریخ آخرین ویرایش: {{post.LastEdit | jformat:"%d / %m / %Y - %H:%M"}}
+وضعیت پست: {{post.get_status}}{% if post.show_author %}
+نمایش نام نویسنده در سایت: بله{% else %}
+نمایش نام نویسنده در سایت: خیر{% endif %}{% if post.publish and post.status == 2 %}
+انتشار در سایت: بله{% else %}
+انتشار در سایت: خیر{% endif %}
+
+
+به امید پیشرفت در کنار هم
+انجمن علمی مهندسی کامپیوتر
+دانشگاه آزاد اسلامی واحد کرج
+{% endautoescape %}

@@ -1,0 +1,100 @@
+{% load static %}
+
+<!DOCTYPE HTML>
+<html lang="fa" dir="rtl">
+<head>
+	<title>انجمن علمی مهندسی کامپیوتر | دانشگاه آزاد کرج</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+	
+	
+	<!-- Font -->
+	<!--* font style css *-->
+<!--* Vazir license * -->
+<style>
+	@font-face {
+	font-family: 'Vazir-ExtraLight';
+	src: url({% static 'fonts/Vazir/Vazir-Thin.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-Light';
+	src: url({% static 'fonts/Vazir/Vazir-Light.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-Regular';
+	src: url({% static 'fonts/Vazir/Vazir.ttf' %}); 
+	}
+	@font-face {
+	font-family: 'Vazir-Medium';
+	src: url({% static 'fonts/Vazir/Vazir-Medium.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-Bold';
+	src: url({% static 'fonts/Vazir/Vazir-Bold.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-SemiBold';
+	src: url({% static 'fonts/Vazir/Vazir-Black.ttf' %}); 
+	}
+</style>
+<!--* end font style css *-->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
+	
+	<link href={% static 'css/home.css' %} rel="stylesheet">
+
+	<link href={% static 'coming_soon/common-css/ionicons.css' %} rel="stylesheet">
+	
+	
+	<link rel="stylesheet" href={% static 'coming_soon/common-css/jquery.classycountdown.css' %} />
+		
+	<link href={% static 'coming_soon/css/styles.css' %} rel="stylesheet">
+	
+	<link href={% static 'coming_soon/css/responsive.css' %} rel="stylesheet">
+	
+</head>
+<body>
+	
+	<div class="main-area-wrapper" style="background-image:url({% static 'coming_soon/images/countdown-6-1600x900.jpg' %});">
+		<div class="main-area center-text" >
+			
+			<div class="display-table">
+				<div class="display-table-cell">
+					
+					<h2 class="title"><b>این صفحه بزودی تکمیل می‌شود</b></h2>
+					<p class="desc font-white">با ما همراه باشید :))</p>
+					
+					<div id="normal-countdown" data-date="2020/04/16" ></div>
+					
+                <br>
+					<a href="/" class="notify-btn" ><b>برگشت به صفحه اصلی</b></a>
+					
+					<ul class="social-btn">
+						<li class="list-heading">شبکه های اجتماعی cec</li>
+						<li><a href="https://instagram.com/ceckiau"><i class="ion-social-instagram-outline"></i></a></li>
+						<li><a href="https://telegram.me/ceckiau"><i class="ion-paper-airplane"></i></a></li>
+						<li><a href="http://aparat.ir/ceckiau"><i class="ion-ios-videocam"></i></a></li>
+
+					</ul>
+					
+				</div><!-- display-table -->
+			</div><!-- display-table-cell -->
+		</div><!-- main-area -->
+	</div><!-- main-area-wrapper -->
+	
+	
+	<!-- SCIPTS -->
+	
+	<script src={% static 'coming_soon/common-js/jquery-3.1.1.min.js' %}></script>
+	
+	<script src={% static 'coming_soon/common-js/jquery.countdown.min.js' %}></script>
+	
+	<script src={% static 'coming_soon/common-js/scripts.js' %}></script>
+	
+</body>
+
+</html>

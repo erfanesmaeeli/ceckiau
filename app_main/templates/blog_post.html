@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load static %}
+{% load jformat %}
+
+
+{% block css-link %}
+{{ block.super }}
+<link rel="stylesheet" href={% static "css/blog_post.css" %}>
+{% endblock css-link %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br class="hide-in-mobile">
+
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb mb-0">
+			<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p>
+			<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+			<li class="breadcrumb-item"><a href="/blog/" class="cec-text-pyblue">بلاگ</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{  post.title }}</li>
+		</ol>
+	</nav>
+	{% if draft %}
+	<div class="alert alert-warning mt-4 mb-0 text-center" role="alert">
+  این پست فقط برای شما قابل نمایش است و دیگران این صفحه را نمیبینند!
+    </div>
+	{% endif %}
+</div>
+<br>
+
+{# blog title bar#}
+<div class="container-fluid">
+	<div class="introduce-cec card-panel text-center post_title_top"> {{  post.title }}</div>
+</div>
+
+
+<div class="container-fluid">
+
+	<div class="row">
+		<div class="col-lg-3 col-md-12 col-12 d-flex mt-4 right_side">
+			<div class="mx-auto">
+				<img class="postcard_img" src="{{ post.image.url }}" width="300" height="300" alt="{{ post.title }}">
+				<div class="card mt-4 postcard_info">
+					<div class="card-body p-4">
+							<div class=" pb-3"><i class="far fa-folder" aria-hidden="true"></i> {{ post.get_category }}</div>
+							<div class=" pb-3"><i class="far fa-calendar-alt" aria-hidden="true"></i> {{ post.DateCreate  | jformat:"%d / %m / %Y"}}</div>
+							<div class=""><i class="far fa-user" aria-hidden="true"></i> نویسنده: {% if post.show_author %}
+					{{ post.author_name }}
+					{% else %}
+					انجمن علمی کامپیوتر
+					{% endif %}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-1 col-md-1 col-12 hide_v"></div>
+
+		<div class="col-lg-9 col-md-12 col-12 pr-5 pl-0 post_body hide-in-mobile">
+			<div class="card mt-4 shadow postcard">
+		  		<div class="card-body">
+		    		<div class="row">
+		    			<div class="col-lg-12 col-md-12 col-12 pr-5 pl-5 postcard2 " align="center">
+							<p class="postcard_text">{{ post.text | safe }}</p>
+		    			</div>
+		    		</div>
+		  		</div>
+			</div>
+			{% if attachment_files %}
+			<div class="card mt-4 shadow postcard">
+				<div class="card-body">
+					<div class="row">
+						<h4 class="p-3 cec-text-pyblue"><i class="fas fa-download"></i> لیست دانلودها:</h4>
+						<div class="col-lg-12 col-md-12 col-12 pr-5 pl-5 postcard2 " align="center">
+							{% for file in attachment_files %}
+							<a href="{{file.file.url}}" class="mb-2 d-flex" download>
+								<span class="p-2 cec-btn-outline-pyblue btn pl-3 pr-3">{{file.name}}</span>
+							</a>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		</div>
+
+		<div class="col-lg-9 col-md-12 col-12 hide-in-desktop">
+			<div class="card mt-4 shadow postcard">
+		  		<div class="card-body">
+		    		<div class="row">
+		    			<div class="col-lg-12 col-md-12 col-12 pr-3 pl-3 pt-0 postcard2" align="center">
+							<p class="postcard_text">{{ post.text | safe }}</p>
+		    			</div>
+		    		</div>
+		  		</div>
+			</div>
+			{% if attachment_files %}
+			<div class="card mt-4 shadow postcard">
+				<div class="card-body">
+					<div class="row">
+						<h4 class=" p-3 cec-text-pyblue"><i class="fas fa-download"></i> لیست دانلودها:</h4>
+						<div class="col-lg-12 col-md-12 col-12 pr-5 pl-5 postcard2 " align="center">
+							{% for file in attachment_files %}
+							<a href="{{file.file.url}}" class="mx-auto mb-3 d-flex" download>
+								<span class="p-2 mx-auto cec-btn-outline-pyblue btn pl-3 pr-3">{{file.name}}</span>
+							</a>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+
+	</div>
+
+</div>
+{# comment #}
+
+
+
+{% endblock content %}

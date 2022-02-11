@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css-link %}
+{{ block.super }}
+<link rel="stylesheet" href={% static "css/cec_members.css" %}>
+{% endblock css-link %}
+
+{% block content %}
+<br>
+<br>
+<br class="hide-in-mobile">
+<div class="container-fluid mt-5 mb-4 pt-md-0 pt-2">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید: &nbsp &nbsp </p>
+      <li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+      <li class="breadcrumb-item active" aria-current="page">معرفی انجمن</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="container-fluid">
+<div class="row">
+  <div class="col-md-9 col-12 mx-auto">
+    <div class="card-panel shadow-sm c-card-panel">
+      <h4 class="c-header text-center cec-text-pykblue"> انجمن علمی مهندسی کامپیوتر &nbsp <br class="hide-in-desktop"> دانشگاه آزاد واحد کرج</h4>
+      <h5 class="c-date text-center cec-text-pyblue">تاریخ تاسیس: 15 / 10 / 1375</h5>
+      <p class="c-description cec-text-darkblue p-md-2 p-0">
+          انجمن علمی دانشجویان مهندسی کامپیوتر دانشگاه آزاد واحد کرج، تشکلی دانشجویی است که از دانشجویان علاقه مند به امور علمی، پژوهشی و فرهنگی تشکیل شده است. این انجمن در اولین دوره ی خود در سال تحصیلی 76-75 شروع به فعالیت کرده است و تاکنون در زمینه های مختلف علمی، پژوهشی، فناوری و فرهنگی فعالیت های گوناگونی را از جمله برگزاری همایش ها، کارگاه ها ، کلاس ها ، دوره های آموزشی حضوری و غیر حضوری ، جشن ها و ... انجام داده است. برای آشنایی بیشتر می توانید از قسمت فوتر سایت با عضویت در کانال تلگرام یا دنبال کردن صفحه ی رسمی اینستاگرام و کانال آپارات انجمن از برنامه های انجام شده و برنامه های آتی آن مطلع شوید.
+      </p>
+      <h5 class="text-center cec-text-pyblue" style="line-height:1.5">در ادامه با خانواده‌ی انجمن علمی مهندسی کامپیوتر آشنا خواهیم شد..</h5>
+    </div>
+  </div>
+</div>
+</div>
+
+<br>
+
+<div class="container-fluid">
+
+{% for y in years %}
+<div class="introduce-cec card-panel text-center mb-5">سال تحصیلی {{y}}</div>
+<h4 class="my_title_line mx-auto"><span>اعضای هیئت رئیسه</span></h4>
+
+  <div class="row pr-md-3 pl-md-3">
+    {% for member in central_members %}
+    {% if member.year.get_year == y %}
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="card my_member_card mt-4">
+        <div class="row">
+          <div class="col-md-8 col-12 mx-auto">
+            <img src="{{member.avatar.url}}" loading="lazy" alt="{{member.name}}">
+          </div>
+          <div class="col-md-12 col-12 mt-3 mx-auto p-0">
+            <h4 class="text-center cec-text-pyblue">{{member.name}}</h4>
+            <h5 class="text-center text-rank">{{member.rank.name}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+
+  </div>
+
+
+{% if y in has_staff %}
+{% for member in staff_members %}
+{% if member.year.get_year == y %}
+
+{% endif %}
+{% endfor %}
+  <br>
+  <br>
+  <br>
+  <h4 class="my_title_line mx-auto"><span>اعضای کادر</span></h4>
+  <div class="row pr-md-3 pl-md-3">
+    {% for member in staff_members %}
+    {% if member.year.get_year == y %}
+    <div class="col-lg-3 col-md-4 col-6">
+      <div class="card my_member_card mt-4">
+        <div class="row">
+          <div class="col-md-8 col-12 mx-auto">
+            <img src="{{member.avatar.url}}" loading="lazy" alt="{{member.name}}">
+          </div>
+          <div class="col-md-12 col-12 mt-3 mx-auto p-0">
+            <h4 class="text-center cec-text-pyblue">{{member.name}}</h4>
+            <h5 class="text-center text-rank">{{member.rank.name}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+
+    {% endif %}
+
+
+
+  </div>
+  <br>
+  <br>
+  {% endfor %}
+  <div class="container mt-5 d-flex">
+	<div class="row mx-auto">
+	<nav aria-label="Page navigation example">
+	  <ul class="pagination">
+
+		{% if years.has_next %}
+	    	<li class="page-item"><a class="page-link" href="?page={{ years.next_page_number }}">سال های قبل</a></li>
+	    {% endif %}
+
+
+		{% for page in years.paginator.page_range reversed %}
+		{% if page == years.number %}
+			<li class="page-item"><a class="page-link bg-secondary text-light" href="?page={{page}}">{{page}}</a></li>
+		{% else %}
+			<li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+			{% endif %}
+		{% endfor %}
+
+		{% if years.has_previous %}
+	    	<li class="page-item"><a class="page-link" href="?page={{ years.previous_page_number }}">سال های بعد</a></li>
+	    {% endif %}
+
+
+	  </ul>
+	</nav>
+	</div>
+	</div>
+</div>
+{% endblock content %}

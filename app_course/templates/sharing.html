@@ -1,0 +1,48 @@
+{% load social_share %}
+<!-- Sharing Modal -->
+<div class="modal fade" id="sharingModalCenter" tabindex="-1" role="dialog" aria-labelledby="sharingModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title text-center mx-auto" id="sharingModalCenterTitle">اشتراک گذاری در </h5>
+		</div>
+		<div class="modal-body  my-modal-body-sharing mx-auto justify-content-center align-self-center align-items-center">
+			<span><i class="fab fa-linkedin"></i></span>
+			<span><i class="fab fa-google-plus"></i></span>
+        <span>{% send_email obj.title obj.description|safe obj.get_absolute_url '<i class="fa fa-envelope teal-text"></i>' %}</span>
+			<span>{% post_to_telegram obj.title obj.get_absolute_url '<i class="fab fa-telegram"></i>' %}</span>
+			<span><a href="" data-action="share/whatsapp/share"><i class="fab fa-whatsapp"></i></a></span>
+			<span><i class="fab fa-twitter"></i></span>
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-light mx-auto d-flex" style="margin-right:0 !important" data-dismiss="modal">بستن</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+
+  <style>
+.my-modal-body-sharing i{
+	text-align: justify;
+	font-size: 35px;
+	padding: 20px;
+}
+.my-modal-body-sharing .fa-linkedin{
+	color:#0e76a8;
+}
+.my-modal-body-sharing .fa-google-plus{
+	color:#DD4B39;
+}
+.my-modal-body-sharing .fa-envelope{
+	color:rgb(20, 165, 129);
+}
+.my-modal-body-sharing .fa-telegram{
+	color:#0088CC;
+}
+.my-modal-body-sharing .fa-twitter{
+	color:#00acee;
+}
+.my-modal-body-sharing .fa-whatsapp{
+	color:#25D366;
+}
+  </style>

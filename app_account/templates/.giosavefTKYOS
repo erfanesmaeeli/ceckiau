@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css-link %}
+	{{ block.super }}
+    <link rel="stylesheet" href={% static "css/signup.css" %}>
+{% endblock css-link %}
+{% block content %}
+	
+
+<!--* signup  *-->
+<br>
+<br><br><br><br class="hide-in-mobile">
+<div class="container">
+	<nav aria-label="breadcrumb">
+					
+		<ol class="breadcrumb mb-4">
+				<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p> 
+		<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+		<li class="breadcrumb-item active" aria-current="page">عضویت در سایت</li>
+		</ol>
+	</nav>
+</div>
+
+{% if error_ok is False %}
+<div class="container">
+	<div class="card shadow-lg p-2">
+		<div class="alert alert-success m-0" role="alert">
+			<h3 class="alert-heading"><strong>تبریک میگم !</strong></h3>
+			 <br>
+			<h4 class="pt-1">ثبت نام شما با موفقیت انجام شد<i class="far fa-check-circle" aria-hidden="true"></i></h4>
+			<hr>
+			<p class="mb-0">خبر های خوبی در راهه :)</p>
+	        <p class="mb-0 mt-1">ایمیل خود را چک کنید.</p>
+		</div>
+	</div>
+</div>
+<br class="hide-in-mobile">
+<br class="hide-in-mobile">
+<br class="hide-in-mobile">
+<br class="hide-in-mobile">
+<br class="hide-in-mobile">
+
+{% else %}
+
+<div class="container help_box_signup">
+	<div class="card text-white cec-bg-pyblue mb-3 ">
+		<!-- <div class="card-header text-center"></div> -->
+		<div class="card-body signup_info_top">
+		  <a href="#signup_info" class="text-light">
+			  <h4 class="signup_info_top cec-text-white card-title text-center m-0"> <i class="far fa-hand-point-left"></i> لطفا ابتدا راهنما را بخوانید سپس ثبت نام نمایید.</h4>
+		  </a>
+		</div>
+	</div>
+</div>
+
+<div class="limiter" dir="ltr">
+	<div class="container-login100">
+		<div class="wrap-login100">
+        <form action="." method="POST">
+				{% csrf_token %}
+			<div class="login100-form validate-form" dir="rtl">
+					{# alert  #}
+				{% if a == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					این <strong>شماره دانشجویی </strong> قبلا ثبت شده است !									  
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				{% endif %}
+
+				{% if b == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					این <strong> پست الکترونیکی  </strong> قبلا ثبت شده است !									  
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				{% endif %}
+            {% if d == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					این <strong> تلفن همراه </strong> قبلا ثبت شده است !									  
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					 </button>
+				</div>
+				{% endif %}
+
+				{% if c == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong> کلمه عبور </strong> با  <strong> تکرار کلمه عبور</strong> یکسان نمی باشد !									  
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				{% endif %}
+            	{% if d == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									  <strong>شماره دانشجویی</strong> معتبر نمی باشد !									  
+									  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									  </button>
+									</div>
+				{% endif %}
+            	{% if e == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									  <strong>نام</strong> نمیتواند انگلیسی باشد !									  
+									  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									  </button>
+									</div>
+				{% endif %}
+				{% if f == 1 %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									  <strong>نام خانوادگی</strong> نمیتواند انگلیسی باشد !									  
+									  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									  </button>
+									</div>
+				{% endif %}
+
+{% if error_ok is not False %}
+				<div class="row">
+					<span class="login100-form-title cec-text-green">
+						عضویت در وب سایت انجمن علمی کامپیوتر	
+					</span>
+					<div class="col-lg-12 col-md-12 sm-12 col-12">
+						<div class="mylable">
+							<h5>نام</h5>
+						</div>
+						<div class="wrap-input100">
+							<input class="input100" type="text" name="cecfname" required title = "" >
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-user-circle my_fa" aria-hidden="true"></i>
+							</span>
+
+						</div>
+
+						<div class="mylable">
+							<h5>نام خانوادگی</h5>
+						</div>
+						<div class="wrap-input100 validate-input">
+							<input class="input100" type="text" name="ceclname" required title = "">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-user-circle my_fa" aria-hidden="true"></i>
+							</span>
+						</div>
+
+						<div class="mylable">
+						<h5>انتخاب دانشگاه</h5>
+						</div>
+						  <div class="wrap-input100 validate-input">
+							<select name="cecuniversity_type" class="custom-select input100 my-select-option" id="inputGroupSelect01" required  title = "">
+							  <div class="myoptions">
+							<option value="1">دانشگاه آزاد کرج</option>
+							<option value="2">سایر دانشگاه ها</option>
+							<option value="3">دانشجو نیستم</option>
+						</div>
+						  </select>
+						  <span class="symbol-input100">
+								<i class="fas fa-school my_fa"> </i>
+								</span>
+						  </div>
+						
+<!-- 						<div id="cec-not-kiau" style="display: none">
+                          <div class="mylable">
+                            <h5>نام کاربری</h5>
+                        </div>
+                        <div class="wrap-input100 validate-input" data-validate="&nbsp; یک نام کاربری انتخاب کنید">
+                            <input class="input100" type="text" name="cecusername" required title = "">
+                            <span class="focus-input100"></span>
+                            <span class="symbol-input100">
+                                <i class="fa fa-user my_fa" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                    	</div> -->
+                       		<div class="mylable">
+                            	<h5>شماره دانشجویی</h5>
+                        	</div>
+<!--                     		<p class="text-center pt-1">اگر دانشجوی دانشگاه آزاد کرج هستید این فیلد را پر کنید</p> -->
+                        	<div class="wrap-input100 validate-input">
+                            	<input class="input100" type="number" name="cecusername" required title = "">
+                            	<span class="focus-input100"></span>
+                            	<span class="symbol-input100">
+                                	<i class="fas fa-user-graduate my_fa"></i>
+                            	</span>
+                        	</div>
+               
+						<div class="mylable">
+							<h5>پست الکترونیک</h5>
+						</div>
+						<div class="wrap-input100 validate-input">
+							<input class="input100" type="email" name="cecemail" required title = "">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-envelope my_fa" aria-hidden="true"></i>
+							</span>
+						</div>
+
+<!-- 						<div class="mylable">
+							<h5>تلفن همراه</h5>
+						</div>
+						<div class="wrap-input100 validate-input">
+							<input class="input100" type="number" name="cecphonenumber" title = "">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-phone my_fa" aria-hidden="true"></i>
+							</span>
+						</div> -->
+
+						<div class="mylable">
+							<h5>کلمه عبور</h5>
+						</div>
+						<div class="wrap-input100 validate-input">
+							<input class="input100" type="password" name="cecpassword" required title = "">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-lock my_fa" aria-hidden="true"></i>
+							</span>
+						</div>
+
+						<div class="mylable">
+							<h5>تکرار کلمه عبور</h5>
+						</div>
+						<div class="wrap-input100 validate-input">
+							<input class="input100" type="password" name="cecpassword-repeat" required title = "">
+							<span class="focus-input100"></span>
+							<span class="symbol-input100">
+								<i class="fa fa-lock my_fa" aria-hidden="true"></i>
+							</span>
+						</div>
+
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn" style="width: 50%">
+							 &nbsp <i class="fas fa-sign-in-alt" style="font-size: 17px"></i> ثبت نام کنید
+						</button>
+					</div>
+				</div>
+{% endif %}
+             </div>
+            </form>
+        
+        	<section id="signup_info"></section>
+        
+		</div>
+	</div>
+</div>
+
+<section id="signup_info"></section>
+
+<div class="container mt-3">
+	<div class="row">
+		<div class="com-lg-10 col-md-10 col-11 mx-auto mt-2 mb-2">
+			<div class="card text-center">
+				<div class="card-header">
+					<i class="fas fa-info-circle"></i> راهنما 
+				</div>
+				<div class="card-body signup_info">
+					<h4 class="card-title d-inline"> عضویت در وب سایت انجمن علمی مهندسی کامپیوتر </h4>
+					<h4 class="card-title d-inline"> | دانشگاه آزاد کرج </h4>
+					<hr>
+					<div class="items">
+							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> عضویت بصورت داوطلبانه و اختیاری می باشد.</h5>
+							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> شماره دانشجویی شما به هیچ عنوان قابل رویت در سایت نمی باشد و جهت هماهنگی با دانشجو  و تایید هویت آن مورد استفاده قرار میگیرد و در اسناد رسمی انجمن محفوظ می ماند و غیرقابل تغییر می باشد.</h5>
+<!-- 							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> وارد کردن تلفن همراه اختیاری می باشد و صرفا جهت برقراری ارتباط با دانشجو و هماهنگی ها صورت میگیرد و در صورت ثبت ،  قابل رویت در سایت نمی باشد و در اسناد رسمی انجمن محفوظ می ماند.</h5> -->
+							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> وارد کردن پست الکترونیکی اجباری است و حتما از یک پست الکترونیک فعال استفاده نمایید تا اطلاع رسانی ها و تایید هویت برای شما ارسال شود. پست الکترونیکی شما داخل سایت قابل رویت نمی باشد و در اسناد رسمی انجمن محفوظ می ماند. در داخل پروفایل کاربری قادر به تغییر آدرس پست الکترونیکی وارد شده نمی باشید . در صورت لزوم با پشتیبانی صحبت نمایید.</h5>
+							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> از انتخاب کردن  کلمه عبور های ساده خودداری فرمایید. درصورت فراموشی کلمه عبور میتوانید کلمه عبور را بازیابی و مجدد تنظیم نمایید.</h5>
+							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> نام و نام خانوادگی خود را فارسی وارد نمایید.</h5>
+							<h5 class="text-left mb-3"><i class="fas fa-check-square"></i> نام کاربری دانشجویان دانشگاه آزاد کرج همان شماره دانشجویی شان میشود.</h5>
+							<hr>
+							<h5 class="text-left mb-3"><i class="fas fa-headset"></i> در صورت بروز مشکل با پشتیبانی در تلگرام به آیدی <a href="https://t.me/cec_online" class="my_t">CEC_Online@</a> در ارتباط باشید.</h5>
+						</div>
+					
+				</div>
+				<div class="card-footer text-muted signup_footer_info">
+					<a onclick='window.scrollTo({top: 0, behavior: "smooth"});' style="cursor:pointer">برگشت به بالا <i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+
+{% endblock content %}

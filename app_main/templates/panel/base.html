@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>پنل مدیریت | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+  {% block css %}
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="{% static "panel/vendors/mdi/css/materialdesignicons.min.css" %}">
+  <link rel="stylesheet" href="{% static "panel/vendors/base/vendor.bundle.base.css" %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <link rel="stylesheet" href="{% static "panel/vendors/datatables.net-bs4/dataTables.bootstrap4.css" %}">
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static "panel/css/style.css" %}">
+  <!-- endinject -->
+  {% endblock %}
+
+  <link rel="shortcut icon" href="{% static "img/logo.png" %}">
+
+</head>
+<body class="sidebar-icon-only">
+  <!--* font style css *-->
+  <!--* Vazir license * -->
+  <style>
+  	@font-face {
+  	font-family: 'Vazir-ExtraLight';
+  	src: url({% static 'fonts/Vazir/Vazir-Thin.ttf' %});
+  	}
+
+  	@font-face {
+  	font-family: 'Vazir-Light';
+  	src: url({% static 'fonts/Vazir/Vazir-Light.ttf' %});
+  	}
+
+  	@font-face {
+  	font-family: 'Vazir-Regular';
+  	src: url({% static 'fonts/Vazir/Vazir.ttf' %});
+  	}
+  	@font-face {
+  	font-family: 'Vazir-Medium';
+  	src: url({% static 'fonts/Vazir/Vazir-Medium.ttf' %});
+  	}
+
+  	@font-face {
+  	font-family: 'Vazir-Bold';
+  	src: url({% static 'fonts/Vazir/Vazir-Bold.ttf' %});
+  	}
+
+  	@font-face {
+  	font-family: 'Vazir-SemiBold';
+  	src: url({% static 'fonts/Vazir/Vazir-Black.ttf' %});
+  	}
+  </style>
+  <!--* end font style css *-->
+  
+  <!--Pre Loader-->
+  <div id="preloader" class="d-flex"></div>
+  
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="{% url 'app-main:panel' %}"><img src="{% static "img/Logo_nav_pyblue.png" %}" alt="logo" loading="lazy"></a>
+          <a class="navbar-brand brand-logo-mini" href="{% url 'app-main:panel' %}"><img src="{% static "img/logo.png" %}" alt="logo" loading="lazy"></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-format-align-right"></span>
+          </button>
+        </div>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <ul class="navbar-nav mr-lg-4 w-100">
+          <li class="nav-item nav-search d-none d-lg-block w-100">
+            <div class="input-group">
+              <div class="input-group-prepend">
+
+              </div>
+
+              <form class="form-inline w-100">
+                  <div class="form-group erfan-search">
+                      <input type="text" name="search" class="form-control pr-2 w-100" placeholder="جستجو کنید" aria-label="search" aria-describedby="search">
+                  </div>
+
+                  <span class="input-group-text pl-1" id="search">
+                    <button type="submit" class="btn p-1 h-100 d-flex">
+                      <i class="mdi mdi-magnify align-self-center pt-1"></i>
+                    </button type="submit">
+                  </span>
+              </form>
+            </div>
+          </li>
+        </ul>
+        <ul class="navbar-nav navbar-nav-right">
+
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="{{user.profile.avatar.url}}" alt="" loading="lazy">
+              <span class="nav-profile-name">{{profile.fname}} {{profile.lname}}</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                {% if user.is_superuser %}
+                <a href="/boldozer/" class="dropdown-item" target="_blank">
+                    <i class="mdi mdi-lock-open text-primary"></i>
+                    پنل ادمین پایه      
+                </a>
+                {% endif %}
+            
+              <a href="{% url 'app-main:settings' %}" class="dropdown-item">
+                <i class="mdi mdi-settings text-primary"></i>
+                تنظیمات
+              </a>
+              <a class="dropdown-item" href="{% url 'app-main:logout' %}">
+                <i class="mdi mdi-logout text-primary"></i>
+                خروج
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav pl-0 pr-0">
+          <li class="nav-item {% if request.path == '/panel/' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'app-main:panel' %}">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">داشبورد</span>
+            </a>
+          </li>
+
+          {% if user.is_superuser %}
+          <li class="nav-item {% if request.path == '/panel/users/' %}active{% endif %}">
+            <a class="nav-link" href="{% url 'app-main:panel' %}">
+              <i class="mdi mdi-account-multiple menu-icon"></i>
+              <span class="menu-title">کاربران</span>
+            </a>
+          </li>
+
+          <li class="nav-item {% if '/panel/blog/' in request.path %}active{% endif %}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-blog" aria-expanded="false" aria-controls="ui-blog">
+              <i class="mdi mdi-pencil menu-icon"></i>
+              <span class="menu-title">مدیریت بلاگ</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-blog">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item "> <a class="nav-link {% if '/panel/blog/new-post/' in request.path %}font-weight-bold cec-text-pyblue{% endif %}" href="{% url 'app-main:new-post' %}">ایجاد پست جدید</a></li>
+                <li class="nav-item"> <a class="nav-link {% if '/panel/blog/all/' in request.path %}font-weight-bold cec-text-pyblue{% endif %}" href="{% url 'app-main:all-posts' %}">مشاهده پست‌ها</a></li>
+                <li class="nav-item"> <a class="nav-link {% if '/authors/' in request.path %}font-weight-bold cec-text-pyblue{% endif %}" href="{% url 'app-main:all-authors' %}">مدیریت نویسندگان</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-courses" aria-expanded="false" aria-controls="ui-courses">
+              <i class="mdi mdi-library-video menu-icon"></i>
+              <span class="menu-title">مدیریت دوره‌ها</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-courses">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">ایجاد دوره جدید</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">مشاهده دوره‌های من</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">مدیریت مدرسان</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-cec-members" aria-expanded="false" aria-controls="ui-cec-members">
+              <i class="mdi mdi-shield-account menu-icon"></i>
+              <span class="menu-title">مدیریت اعضای انجمن</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-cec-members">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">ایجاد عضو جدید</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">مشاهده اعضا</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">درخواست های ارسال شده</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="mdi mdi-headset menu-icon"></i>
+              <span class="menu-title">مدیریت تیکت‌ها</span>
+            </a>
+          </li>
+          {% endif %}
+
+          {% if user.profile.is_author and not user.is_superuser %}
+          <li class="nav-item {% if '/panel/blog/' in request.path %}active{% endif %}">
+            <a class="nav-link" data-toggle="collapse" href="#ui-blog" aria-expanded="false" aria-controls="ui-blog">
+              <i class="mdi mdi-pencil menu-icon"></i>
+              <span class="menu-title">مدیریت بلاگ</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-blog">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item "> <a class="nav-link {% if '/panel/blog/new-post/' in request.path %}font-weight-bold cec-text-pyblue{% endif %}" href="{% url 'app-main:new-post' %}">ایجاد پست جدید</a></li>
+                <li class="nav-item"> <a class="nav-link {% if '/panel/blog/all/' in request.path %}font-weight-bold cec-text-pyblue{% endif %}" href="{% url 'app-main:all-posts' %}">مشاهده پست‌های من</a></li>
+              </ul>
+            </div>
+          </li>
+          {% endif %}
+
+          {% if user.profile.is_teacher and not user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-courses" aria-expanded="false" aria-controls="ui-courses">
+              <i class="mdi mdi-library-video menu-icon"></i>
+              <span class="menu-title">مدیریت دوره‌ها</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-courses">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">ایجاد دوره جدید</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">مشاهده دوره‌های من</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">مدیریت مدرسان</a></li>
+              </ul>
+            </div>
+          </li>
+          {% endif %}
+
+          <li class="nav-item {% if "/settings/" in request.path %}active cec-text-pyblue font-weight-bold {% endif %}">
+            <a class="nav-link" href="{% url 'app-main:settings' %}">
+              <i class="mdi mdi-settings menu-icon"></i>
+              <span class="menu-title">تنظیمات</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+
+          {% block content %}
+
+          {% endblock %}
+
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">&#169; تمامی محتویات این سایت متعلق به انجمن علمی کامپیوتر دانشگاه آزاد اسلامی واحد کرج می‌باشد.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">طراحی شده توسط <a target="_blank" href="https://erffan.com">عرفان اسماعیلی</a> <i class="mdi mdi-label text-dark"></i></span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  {% block js %}
+  <!-- plugins:js -->
+  <script src="{% static "panel/vendors/base/vendor.bundle.base.js" %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+
+  <script src="{% static "panel/vendors/chart.js/Chart.min.js" %}"></script>
+  <script src="{% static "panel/vendors/datatables.net/jquery.dataTables.js" %}"></script>
+
+  <script src="{% static "panel/vendors/datatables.net-bs4/dataTables.bootstrap4.js" %}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static "panel/js/off-canvas.js" %}"></script>
+  <script src="{% static "panel/js/hoverable-collapse.js" %}"></script>
+  <script src="{% static "panel/js/template.js" %}"></script>
+  <!-- endinject -->
+
+  <!-- Custom js for this page-->
+  <script src="{% static "panel/js/dashboard.js" %}"></script>
+  <script src="{% static "panel/js/data-table.js" %}"></script>
+  {% comment %} persian sort  {% endcomment %}
+  {% comment %} <script src="https://cdn.datatables.net/plug-ins/1.10.21/sorting/persian.js" charset="utf-8"></script> {% endcomment %}
+
+  <script src="{% static "panel/js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "panel/js/dataTables.bootstrap4.js" %}"></script>
+  <!-- End custom js for this page-->
+
+  <script type="text/javascript">
+  {% if messages %}
+  {% for message in messages %}
+    var toast = {};
+    toast.show = function(text, options) {
+      let defaults = {
+        timeout: 6500,
+      };
+      var settings = $.extend({}, defaults, options);
+
+      if( Math.floor(settings.timeout) != settings.timeout && !$.isNumeric(settings.timeout) ) {
+        console.warn('Timeout must be an integer.');
+        settings.timeout = 6500;
+      }
+
+    {% if message.tags == 'success' %}
+      var toastHTML = '<div class="toast expanded bg-success">';
+      toastHTML += '<div class="text">' + text + '</div>';
+      toastHTML += '</div><br/>';
+    {% elif message.tags == 'error' %}
+      var toastHTML = '<div class="toast expanded bg-danger">';
+      toastHTML += '<div class="text">' + text + '</div>';
+      toastHTML += '</div><br/>';
+    {% endif %}
+
+      $(toastHTML).appendTo('.toast-container').delay(settings.timeout).queue(function() {
+        toast.remove($(this));
+        $(this).dequeue();
+      });
+    }
+
+    toast.remove = function(el) {
+      $(el).removeClass('expanded');
+      $(el).addClass('dismiss');
+      setTimeout(function() {
+        $(el).remove();
+      }, 2000);
+    }
+
+    toast.init = function() {
+      $('body').append('<div class="toast-container"></div>');
+    }
+    $(document).ready(function() {
+      toast.init();
+      toast.show('{{message}}', {});
+    });
+
+  {% endfor %}
+  {% endif %}
+  
+    // Preloader
+    $(window).on('load', function() {
+       if ($('#preloader').length) {
+         $('#preloader').delay(100).fadeOut('slow', function() {
+           $(this).remove();
+         });
+       }
+     });
+  </script>
+  {% endblock %}
+
+</body>
+
+</html>

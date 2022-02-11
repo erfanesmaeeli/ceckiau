@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+{% load static %}
+{% load gravatar %}
+{% load jformat %}
+{% load erfan_calendar1 %}
+
+
+{% block css-link %}
+	{{ block.super }}
+	   <link rel="stylesheet" href={% static "css/profile.css" %}>
+{% endblock css-link %}
+
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+{% if not user.is_authenticated %}
+<div class="container d-flex justify-content-center mt-4">
+	<div class="card border-info mb-3 w-md-50 my-alert-card" >
+	  <div class="cec-text-pyblue card-header text-center ">-- شما قادر به دیدن این صفحه نمی باشید --</div>
+	  <div class="card-body text-info">
+		<h3 class="cec-text-pyblue card-title text-center">ابتدا وارد سایت شوید</h3>
+		<div class="container pt-2 justify-content-center d-flex mx-auto">
+			<button class="cec-btn-pyblue btn d-inline" data-toggle="modal" data-target="#loginModal" style="width: 150px"><i class="fas fa-user-tie"></i> ورود</button>
+		</div>
+	  </div>
+	</div>
+	</div>
+{% else %}
+<div class="container-fluid">
+	{% if error %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<strong>تغییرات</strong> با موفقیت اعمال شد.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+	{% endif %}
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb mt-2">
+					<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p>
+			<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+			<li class="breadcrumb-item active" aria-current="page">پروفایل</li>
+			</ol>
+		</nav>
+
+	<div class="row">
+
+	<div class="col-lg-2 col-md-2 col-11 mb-4 my_profile_panel_tab">
+			<div class="col-12 d-flex justify-content-center mb-3">
+				{% if user.profile.avatar %}
+					<img id="user-avatar" src="{{user.profile.avatar.url}}" alt="" class="user-avatar" height="150px" width="150px"loading="lazy">
+					{% else %}
+					<img id="user-avatar" src="{% gravatar_url user.email 150 %}" alt="" class="user-avatar" height="150px" width="150px"loading="lazy">
+					{% endif %}
+				</div>
+				<div class="card mb-3 w-50 d-flex mx-auto">
+						<div class="card-body p-0">
+							{% if user.profile.rank == 1 %}
+								<h5 class="text-center p-2 m-0 user-rank">کاربر عادی</h5>
+
+								{% elif user.profile.rank == 2 %}
+								<h5 class="text-center p-2 m-0 user-rank">نویسنده</h5>
+
+								{% elif user.profile.rank == 3 %}
+								<h5 class="text-center p-2 m-0 user-rank">کادر انجمن</h5>
+
+								{% elif user.profile.rank == 4 %}
+								<h5 class="text-center p-2 m-0 user-rank">هیئت رئیسه</h5>
+
+								{% elif user.profile.rank == 5 %}
+								<h5 class="text-center p-2 m-0 user-rank">معاون ارشد</h5>
+
+								{% elif user.profile.rank == 6 %}
+								<h5 class="text-center p-2 m-0 user-rank">مدیر کل</h5>
+							{% endif %}
+						</div>
+					  </div>
+		<div class="list-group" id="list-tab" role="tablist">
+		<a class="list-group-item list-group-item-action active" id="dashboard_list" data-toggle="list" href="#dashboard" role="tab" aria-controls="home"><i class="fas fa-tachometer-alt"></i> داشبورد</a>
+		<a class="list-group-item list-group-item-action" id="personal_info_list" data-toggle="list" href="#personal_info" role="tab" aria-controls="home"><i class="fas fa-user"></i> مشخصات فردی</a>
+		{% if user.username.0 in '9,8,7,6,5,4' %}
+			<a class="list-group-item list-group-item-action" id="student_info_list" data-toggle="list" href="#student_info" role="tab" aria-controls="profile"><i class="fas fa-user-graduate"></i> مشخصات دانشجویی</a>
+		{% endif %}
+		<a class="list-group-item list-group-item-action" id="my_courses_list" data-toggle="list" href="#my_courses" role="tab" aria-controls="profile"><i class="fas fa-film"></i> دوره‌های من</a>
+		<a class="list-group-item list-group-item-action" id="send_msg_list" data-toggle="list" href="#send_msg" role="tab" aria-controls="messages"><i class="fas fa-comment-alt"></i> ارسال تیکت</a>
+		<a class="list-group-item list-group-item-action" id="settings_list" data-toggle="list" href="#settings" role="tab" aria-controls="settings"><i class="fas fa-cog"></i> تنظیمات</a>
+		</div>
+	</div>
+	<div class="col-lg-10 col-md-9 col-10 my_profile_panel">
+		<div class="tab-content" id="nav-tabContent">
+				<div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashbord_list">
+
+					<div class="container mt-4">
+						<h4 class="my_text_p mb-4">خبر‌‌های تازه</h4>
+						<div class="row">
+						{% if not user.profile.staff %}
+							<div class="four col-md-3">
+								<a href={% url 'app-account:staff-signup' %}>
+									<div class="counter-box colored colored-green"> <i class="fas fa-user-plus"></i>
+										<p>عضویت در کادر</p>
+									</div>
+								</a>
+							</div>
+						{% else %}
+
+						{% if user.profile.staff.state == 1 %}
+							<div class="four col-md-3 show-on-mobile">
+								<span class="text-left pl-3 d-block pb-2">وضعیت درخواست شما</span>
+								<span class="text-left pl-3 d-block pb-2">(عضویت در کادر):</span>
+								<div class="counter-box colored colored-orange"> <i class="fas fa-notes-medical"></i>
+									<p>ارسال درخواست</p>
+								</div>
+							</div>
+						{% elif user.profile.staff.state == 2 %}
+							<div class="four col-md-3 show-on-mobile">
+								<span class="text-left pl-3 d-block pb-2">وضعیت درخواست شما</span>
+								<span class="text-left pl-3 d-block pb-2">(عضویت در کادر):</span>
+								<div class="counter-box colored colored-blue"> <i class="fas fa-users"></i>
+									<p>مصاحبه حضوری</p>
+									{% if user.profile.staff.date %}
+										<h5 class="cec-text-white">{{user.profile.staff.date | jformat:"%d / %m / %Y"}} &nbsp- &nbsp{{user.profile.staff.time}}</h5>
+									{% endif %}
+								</div>
+							</div>
+
+						{% elif user.profile.staff.state == 3 %}
+							<div class="four col-md-3 show-on-mobile">
+								<span class="text-left pl-3 d-block pb-2">وضعیت درخواست شما</span>
+								<span class="text-left pl-3 d-block pb-2">(عضویت در کادر):</span>
+								<div class="counter-box colored colored-grey"> <i class="fas fa-key"></i>
+									<p>بررسی اطلاعات شما</p>
+								</div>
+							</div>
+
+						{% elif user.profile.staff.state == 4 %}
+							<div class="four col-md-3 show-on-mobile">
+								<span class="text-left pl-3 d-block pb-2">وضعیت درخواست شما</span>
+								<span class="text-left pl-3 d-block pb-2">(عضویت در کادر):</span>
+								<div class="counter-box colored colored-green"> <i class="fas fa-check-circle"></i>
+									<p>تایید نهایی</p>
+								</div>
+							</div>
+
+						{% elif user.profile.staff.state == 5 %}
+							<div class="four col-md-3 show-on-mobile">
+								<span class="text-left pl-3 d-block pb-2">وضعیت درخواست شما</span>
+								<span class="text-left pl-3 d-block pb-2">(عضویت در کادر):</span>
+								<div class="counter-box colored colored-red"> <i class="fas fa-times-circle"></i>
+									<p>عدم تایید!</p>
+								</div>
+							</div>
+							{% endif %}
+
+								<div class="container px-1 px-md-4 mx-auto show-on-desktop">
+									<div class="card state_card">
+										<div class="row d-flex justify-content-between px-3 top">
+											<div class="d-flex text-left">
+												<h5><i class="fa fa-angle-left"></i> درخواست شما: عضویت در کادر</h5>
+											</div>
+											<div class="d-flex flex-column text-sm-right">
+												<h5 class="mb-0"><i class="fa fa-clock"></i> تاریخ ایجاد درخواست:  <span>{{ user.profile.staff.DateCreate | jformat:"%d / %m / %Y" }}</span>
+											</div>
+										</div> <!-- Add class 'active' to progress -->
+										{% if user.profile.staff.state == 5 %}
+											<h3 class="text-danger font-weight-bold text-center p-5">عدم تایید!</h3>
+										{% else %}
+										<div class="row d-flex justify-content-center">
+											<div class="col-12">
+												{% if user.profile.staff.state == 1 %}
+												<ul id="progressbar" class="text-center">
+													<li class="icon-i active step0"></li>
+													<li class="icon-i step0"></li>
+													<li class="icon-i step0"></li>
+													<li class="icon-i step0"></li>
+												</ul>
+												{% elif user.profile.staff.state == 2 %}
+												<ul id="progressbar" class="text-center">
+													<li class="icon-i active step0"></li>
+													<li class="icon-i active step0"></li>
+													<li class="icon-i step0"></li>
+													<li class="icon-i step0"></li>
+												</ul>
+												{% elif user.profile.staff.state == 3 %}
+												<ul id="progressbar" class="text-center">
+													<li class="icon-i active step0"></li>
+													<li class="icon-i active step0"></li>
+													<li class="icon-i active step0"></li>
+													<li class="icon-i step0"></li>
+												</ul>
+												{% elif user.profile.staff.state == 4 %}
+												<ul id="progressbar" class="text-center">
+													<li class="icon-i active step0"></li>
+													<li class="icon-i active step0"></li>
+													<li class="icon-i active step0"></li>
+													<li class="icon-i active step0"></li>
+												</ul>
+												{% endif %}
+											</div>
+										</div>
+                                        {% endif %}
+										<div class="row justify-content-between top">
+											<div class="row d-flex icon-content"> <img class="icon" src="{% static 'img/icons/icon-accept.png' %}">
+												<div class="d-flex flex-column">
+													<p class="font-weight-bold pl-1">تایید<br>نهایی</p>
+												</div>
+											</div>
+											<div class="row d-flex icon-content"> <img class="icon" src="{% static 'img/icons/icon-key.png' %}">
+												<div class="d-flex flex-column">
+													<p class="font-weight-bold">بررسی<br>اطلاعات شما</p>
+												</div>
+											</div>
+											<div class="row d-flex icon-content"> <img class="icon" src="{% static 'img/icons/icon-meeting.png' %}">
+												<div class="d-flex flex-column">
+													{% if user.profile.staff.date %}
+													<p class="font-weight-bold pl-2">  مصاحبه حضوری<br>
+														 {{user.profile.staff.date | jformat:"%d / %m / %Y"}} &nbsp- &nbsp{{user.profile.staff.time}}
+													</p>
+													{% else %}
+													<p class="font-weight-bold pl-2">مصاحبه <br>
+														حضوری
+												   </p>
+													{% endif %}
+												</div>
+											</div>
+											<div class="row d-flex icon-content"> <img class="icon" src={% static 'img/icons/icon1.png' %}>
+												<div class="d-flex flex-column">
+													<p class="font-weight-bolder "> ارسال <br> درخواست </p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+						{% endif %}
+						</div>
+					</div>
+
+					<hr class="w-75 w_line">
+
+					<div class="container mt-3">
+						<h4 class="my_text_p">فعالیت‌های من</h4>
+						<br>
+						<div class="row">
+							<div class="four col-lg-3 col-md-4">
+								<div class="counter-box"> <i class="fa fa-book-open"></i> <span class="counter">0</span>
+									<p>دوره شرکت کرده اید</p>
+								</div>
+							</div>
+							<div class="four col-lg-3 col-md-4">
+								<div class="counter-box"> <i class="fa fa-file-alt"></i> <span class="counter">{{user.author.count}}</span>
+									<p>مقاله گذاشته اید</p>
+								</div>
+							</div>
+							<div class="four col-lg-3 col-md-4">
+								<div class="counter-box"> <i class="fa fa-video"></i> <span class="counter">0</span>
+									<p>ویدئو آماده کرده اید</p>
+								</div>
+							</div>
+							<div class="four col-lg-3 col-md-4">
+								<div class="counter-box"> <i class="fa fa-chalkboard-teacher"></i> <span class="counter">0</span>
+									<p>کلاس برگزار کرده اید</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			<div class="tab-pane fade show" id="personal_info" role="tabpanel" aria-labelledby="personal_info_list">
+				<form action="." method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+					<div class="row p-4">
+						<div class="col-lg-4 col-md-5 col-12 my_col">
+							<div class="form-group mb-4">
+								<label class="mylabel" for="formGroupExampleInput">نام</label>
+								<input name="cecfname" value="{{user.profile.fname}}" type="text" class="form-control" id="formGroupExampleInput" required>
+							</div>
+							<div class="form-group mb-4">
+									<label class="mylabel" for="formGroupExampleInput">نام خانوادگی</label>
+									<input name="ceclname" value="{{user.profile.lname}}" type="text" class="form-control" id="formGroupExampleInput" required>
+							</div>
+							<div class="form-group mb-4">
+									<label class="mylabel" for="formGroupExampleInput">پست الکترونیک</label>
+									<input readonly value="{{user.profile.email}}" type="text" class="form-control text-right" id="formGroupExampleInput" required>
+									<small id="emailHelp" class="form-text text-muted"><i class="fas fa-lock"></i> این بخش غیرقابل تغییر است! </small>
+							</div>
+							<div class="form-group mb-4">
+									<label class="mylabel" for="formGroupExampleInput">تلفن همراه</label>
+									<input name="cecphonenumber" value="{{user.profile.phone}}" type="number" class="form-control" id="formGroupExampleInput">
+									<small id="emailHelp" class="form-text text-muted"><i class="fas fa-exclamation-circle"></i> همراه با صفر </small>
+							</div>
+						</div>
+						<div class="col-lg-2 col-md-1 col-12"></div>
+						<div class="col-lg-4 col-md-5 col-12">
+								<div class="form-group mb-4">
+									<label class="mylabel" for="formGroupExampleInput">عکس پروفایل</label>
+									<input name="cecprofileavatar" type="file" accept=".jpg , .png , .jpeg" class="form-control-file" id="exampleFormControlFile1" style="font-size: 15px;padding-top: 7px;">
+								</div>
+									<!-- <div class="form-group ">
+										<label class="mylabel" for="formGroupExampleInput">تاریخ تولد</label>
+										<div class="row  ">
+											<div class="col-lg-4 col-md-4 col-12 mb-4" >
+												<select class="form-control" onmousedown="{this.size=6;}"  onchange='this.size=0;' onblur="this.size=0;">
+													<option>1</option>   <option>2</option>   <option>3</option>   <option>4</option>
+													<option>5</option>   <option>6</option>   <option>7</option>
+													<option>8</option>   <option>9</option>   <option>10</option>
+													<option>11</option>   <option>12</option>   <option>13</option>
+													<option>14</option>   <option>15</option>   <option>16</option>
+													<option>17</option>   <option>18</option>   <option>19</option>
+													<option>20</option>   <option>21</option>   <option>22</option>
+													<option>23</option>   <option>24</option>   <option>25</option>
+													<option>26</option>   <option>27</option>   <option>28</option>
+													<option>29</option>   <option>30</option>   <option>31</option>
+												</select>
+											</div>
+
+											<div class="col-lg-4 col-md-4 col-12">
+												<div class="form-group mb-4">
+													<select class="form-control" onmousedown="{this.size=6;}"  onchange='this.size=0;' onblur="this.size=0;">
+														<option>فروردین</option>   <option>اردیبهشت</option>   <option>خرداد</option>   <option>تیر</option>
+														<option>مرداد</option>   <option>شهریور</option>   <option>مهر</option>
+														<option>آبان</option>   <option>آذر</option>   <option>دی</option>
+														<option>بهمن</option>   <option>اسفند</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-lg-4 col-md-4 col-12">
+												<div class="form-group">
+													<select class="form-control" onmousedown="{this.size=6;}"  onchange='this.size=0;' onblur="this.size=0;">
+														<option>1390</option>   <option>1389</option>   <option>1388</option>   <option>1387</option>
+														<option>1386</option>   <option>1385</option>   <option>1384</option>
+														<option>1383</option>   <option>1382</option>   <option>1380</option>
+														<option>1379</option>   <option>1378</option>	<option>1377</option>
+														<option>1376</option>	<option>1375</option>	<option>1374</option>
+														<option>1373</option>	<option>1372</option>	<option>1371</option>
+														<option>1370</option>	<option>1369</option>	<option>1368</option>
+														<option>1367</option>	<option>1366</option>	<option>1365</option>
+														<option>1364</option>	<option>1363</option>	<option>1362</option>
+														<option>1361</option>	<option>1360</option>	<option>1359</option>
+														<option>1358</option>	<option>1357</option>	<option>1356</option>
+														<option>1355</option>	<option>1354</option>	<option>1353</option>
+														<option>1352</option>	<option>1351</option>	<option>1350</option>
+														<option>1349</option>	<option>1348</option>	<option>1347</option>
+														<option>1346</option>	<option>1345</option>	<option>1344</option>
+														<option>1343</option>	<option>1342</option>	<option>1341</option>
+														<option>1340</option>
+													</select>
+												</div>
+											</div>
+										</div>
+								</div> -->
+								<div class="form-group mb-4">
+										<label class="mylabel" for="formGroupExampleInput">تاریخ تولد</label>
+										<input name="cecbirthday" value="{{user.profile.birthday}}" type="text" class="form-control text-right" id="formGroupExampleInput" >
+										<small id="emailHelp" class="form-text text-muted"><i class="fas fa-exclamation-circle"></i> بعنوان نمونه: 1377/10/10</small>
+								</div>
+								<div class="form-group mb-4">
+										<label class="mylabel" for="formGroupExampleInput">جنسیت</label>
+										<select name="cecsex" class="form-control">
+											{% if user.profile.sex is 1 %}
+												<option value="2">خانم</option>
+												<option value="1" selected>آقا</option>
+											{% else %}
+												<option value="2" selected>خانم</option>
+												<option value="1">آقا</option>
+											{% endif %}
+											  </select>
+								</div>
+								<div class="form-group mb-4">
+										<label class="mylabel" for="formGroupExampleInput">محل زندگی</label>
+										<select name="ceclive" class="form-control">
+											{% if user.profile.live is 1 %}
+												<option value="1" selected>کرج</option>
+												<option value="2">تهران</option>
+												<option value="3">سایر</option>
+											{% elif user.profile.live is 2 %}
+												<option value="2" selected>تهران</option>
+												<option value="1">کرج</option>
+												<option value="3">سایر</option>
+											{% else %}
+												<option value="2">تهران</option>
+												<option value="1">کرج</option>
+												<option value="3" selected>سایر</option>
+											{% endif %}
+											  </select>
+								</div>
+							</div>
+						<div class="col-12">
+						<button type="submit" class="btn cec-btn-green d-flex mx-auto justify-content-center" style="width: 140px">ثبت تغییرات</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="tab-pane fade" id="student_info" role="tabpanel" aria-labelledby="student_info_list">
+			<form>
+					<div class="row p-4">
+						<div class="col-lg-4 col-md-5 col-12 my_col">
+							<div class="form-group mb-4">
+								<label class="mylabel" for="formGroupExampleInput">شماره دانشجویی</label>
+								<input readonly value="{{user.username}}" type="text" class="form-control" id="formGroupExampleInput" required>
+								<small id="emailHelp" class="form-text text-muted"><i class="fas fa-lock"></i> این بخش غیرقابل تغییر است! </small>
+							</div>
+							<div class="form-group mb-4">
+									<label class="mylabel" for="formGroupExampleInput">سال ورودی</label>
+									<input readonly value="{{user.profile.join_uni}}" type="text" class="form-control" id="formGroupExampleInput" required>
+									<small id="emailHelp" class="form-text text-muted"><i class="fas fa-lock"></i> این بخش غیرقابل تغییر است! </small>
+								</div>
+						</div>
+						<!-- <div class="col-12">
+						<button type="submit" class="mybtn-warning btn btn-warning d-flex mx-auto justify-content-center" style="width: 140px">ثبت تغییرات</button>
+						</div> -->
+					</div>
+				</form>
+			</div>
+			<div class="tab-pane fade" id="my_courses" role="tabpanel" aria-labelledby="my_courses_list">
+				شما هنوز در هیچ دوره ایی ثبت نام نکرده اید!
+			</div>
+			<div class="tab-pane fade" id="send_msg" role="tabpanel" aria-labelledby="send_msg_list">
+				این بخش به زودی در دسترس خواهد شد.
+			</div>
+			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings_list">
+					<form action="." method="POST">
+							{% csrf_token %}
+							<div class="row p-4">
+								<div class="col-lg-5 col-md-5 col-12 my_col">
+									<div class="form-group mb-4">
+										<label class="mylabel" for="formGroupExampleInput">پروفایل من را در سایت</label>
+										<select name="cec_showprofile" class="form-control">
+											{% if user.profile.show_profile %}
+												<option value="0">نمایش نده</option>
+												<option value="1" selected>نمایش بده</option>
+											{% else %}
+												<option value="0" selected>نمایش نده</option>
+												<option value="1">نمایش بده</option>
+											{% endif %}
+										</select>
+										<small id="emailHelp" class="form-text text-muted"><i class="fas fa-eye"></i> با فعال کردن این گزینه پروفایل شما در سایت نمایش داده خواهد شد.</small>
+										<small id="emailHelp" class="form-text text-muted mt-2"><i class="fas fa-shield-alt"></i> تلفن همراه و شماره دانشجویی شما محفوظ خواهد بود.</small>
+
+										</div>
+								</div>
+								<div class="col-12">
+								<button type="submit" class="btn cec-btn-green d-flex mx-auto justify-content-center" style="width: 140px">ثبت تغییرات</button>
+								</div>
+							</div>
+						</form>
+						<h5 class="pt-5 pl-2 text-muted"> <i class="fas fa-clock"></i> شما در تاریخ &nbsp{{user.profile.DateCreate | jalali_date}}&nbsp در سایت ثبت نام نموده اید.</h5>
+			</div>
+		</div>
+	</div>
+	</div>
+
+	</div>
+{% endif %}
+{% endblock content %}
+
+{% block js_link %}
+	{{ block.super }}
+	<script src={% static "js/profile.js" %}></script>
+{% endblock js_link %}

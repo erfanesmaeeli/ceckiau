@@ -1,0 +1,710 @@
+{% load static %}
+{% load gravatar %}
+
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+	<!--* pages title *-->
+	{% if request.path == "/" %}
+	<title>انجمن علمی مهندسی کامپیوتر | دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/user/signup/" %}
+	<title>عضویت در وب سایت انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/user/profile/" %}
+	<title>پروفایل کاربری | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/user/reset-password/" %}
+	<title>فراموشی کلمه عبور | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/roadmap/" %}
+	<title>نقشه راه آینده | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/team/" %}
+	<title>تیم فنی | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/members/" %}
+	<title>اعضای هیئت رئیسه و کادر رسمی | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/user/staff-signup/" %}
+	<title>عضویت در کادر | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif request.path == "/blog/" %}
+	<title>بلاگ | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif "/blog/" in request.path %}
+	{% if post %}
+	<title>{{post.title}} | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+	{% else %}
+		<title>پست پیدا نشد | انجمن علمی مهندسی کامپیوتر | دانشگاه آزاد کرج</title>
+	{% endif %}
+
+	{% elif request.path == "/courses/" %}
+	<title>دوره های آموزشی | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+	{% elif "/courses/" in request.path %}
+		{% if course %}
+	<title>{{course.title}} | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+		{% else %}
+	<title>{{session.title}} | {{session.course.title}} | انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج</title>
+
+		{% endif %}
+
+	{% else %}
+	<title>انجمن علمی مهندسی کامپیوتر | دانشگاه آزاد کرج</title>
+
+	{% endif %}
+
+	<!--     Chrome and Firefox OS & opera title bar color  -->
+	<meta name="theme-color" content="#306998">
+	<!--     Windows Phone title bar color  -->
+	<meta name="msapplication-navbutton-color" content="yes">
+	<!--     Sfarai / iOS title bar color  -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<!--* favicon *-->
+	<link rel="icon" href="{% static "img/logo.png" %}" type=img/png sizes="16x16">
+
+	<!--* meta settings *-->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<!-- SEO 1 -->
+	<meta name="google-site-verification" content="MgJXsGaGhH9erVWPsoIyQLT4hKy1mpSXxVFBM7at9vc"/>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-145598571-4"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+  		gtag('config', 'UA-145598571-4');
+	</script>
+
+	<!-- SEO 2 -->
+	{% if request.path == "/" %}
+	<meta name="description" content="انجمن علمی دانشجویان مهندسی کامپیوتر دانشگاه آزاد واحد کرج، تشکلی دانشجویی است که از دانشجویان علاقه مند به امور علمی، پژوهشی و فرهنگی تشکیل شده است.">
+	<meta property="og:image"  content="http://ceckiau.ir/static/img/logo.png">
+
+	{% elif request.path == "/user/signup/" %}
+	<meta name="description" content="با ثبت نام در انجمن علمی مهندسی کامپیوتر دانشگاه آزاد اسلامی کرج، می‌توانید از دوره ها و امکانات وب سایت انجمن به صورت کامل استفاده کنید.">
+
+	{% elif request.path == "/user/profile/" %}
+	<meta name="description" content="در پروفایل شما می‌توانید لیست دوره های ثبت نام شده را دریافت کنید، اطلاعات کاربریتان را مشاهده و ویرایش کنید و در کادر انجمن عضو یابید.">
+
+	{% elif request.path == "/user/reset-password/" %}
+	<meta name="description" content="از طریق این صفحه می‌توانید رمز خود را بازنشانی کنید و رمز جدید دریافت کنید.">
+
+	{% elif request.path == "/roadmap/" %}
+	<meta name="description" content="نقشه راه حال ، گذشته و آینده... در این بخش اقداماتی که به مرور زمان در وب سایت انجمن اتفاق افتاده است را مورد بررسی قرار می‌دهیم.">
+
+	{% elif request.path == "/team/" %}
+	<meta name="description" content="تلاش چندین ماهه دانشجویان رشته مهندسی کامپیوتر دانشگاه آزاد کرج نتیجه اش وب سایت انجمن بوده است. در این صفحه با تیم فنی آشنا می‌شویم.">
+
+	{% elif request.path == "/members/" %}
+	<meta name="description" content="خفن ترین و باحال ترین کادر انجمن های علمی کل کشور - هیئت رئیسه انجمن علمی کامپیوتر دانشگاه آزاد کرج">
+
+	{% elif request.path == "/user/staff-signup/" %}
+	<meta name="description" content="در این صفحه می‌توانید درخواست برای عضویت در کادر رسمی انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج ارسال نمایید.">
+
+	{% elif request.path == "/blog/" %}
+	<meta name="description" content="آخرین اخبار و اطلاع رسانی های منتشر شده توسط انجمن علمی مهندسی کامپیوتر را در صفحه بلاگ می‌توانید بخوانید.">
+
+	{% elif "/blog/" in request.path %}
+	<meta name="description" content="{{ post.meta_description }}">
+	<meta property="og:image"  content="{{ post.image.url }}">
+
+	{% elif request.path == "/courses/" %}
+	<meta name="description" content="آموزش ها، دوره ها و مجموعه های ویدیویی انجمن علمی مهندسی کامپیوتر هر روزه در حال بروز رسانی است که می‌توانید به آن‌ها در صفحه دوره ها به آن‌ها دسترسی داشته باشید.">
+
+	{% elif "/courses/" in request.path %}
+		{% if course %}
+		<meta name="description" content="{{ course.meta_description }}">
+		<meta property="og:image"  content="{{ course.image.url }}">
+
+		{% else %}
+		<meta name="description" content="{{ session.meta_description }}">
+
+		{% endif %}
+
+	{% else %}
+	<meta name="description" content="انجمن علمی مهندسی کامپیوتر دانشگاه آزاد کرج">
+
+	{% endif %}
+
+	<!--* bootstrap 4.2.1 rtl css link *-->
+	<link rel="stylesheet" href="{% static "lib/bootstrap-4.2.1-rtl/dist/css/rtl/bootstrap.min.css" %}">
+
+	<!--* static css links  *-->
+	{% block css-link %}
+	   <link rel="stylesheet" href="{% static "css/home.css" %}">
+	{% endblock css-link %}
+
+	<!--* font awsome 5.10 link  *-->
+	<link rel="stylesheet" href="{% static "lib/fontawesome-free-5.10.2-web/css/all.min.css" %}">
+
+
+    <!--* font style css *-->
+    <!--* Vazir license * -->
+    <style>
+    	@font-face {
+    	font-family: 'Vazir-ExtraLight';
+    	src: url({% static 'fonts/Vazir/Vazir-Thin.ttf' %});
+    	}
+    
+    	@font-face {
+    	font-family: 'Vazir-Light';
+    	src: url({% static 'fonts/Vazir/Vazir-Light.ttf' %});
+    	}
+    
+    	@font-face {
+    	font-family: 'Vazir-Regular';
+    	src: url({% static 'fonts/Vazir/Vazir.ttf' %});
+    	}
+    	@font-face {
+    	font-family: 'Vazir-Medium';
+    	src: url({% static 'fonts/Vazir/Vazir-Medium.ttf' %});
+    	}
+    
+    	@font-face {
+    	font-family: 'Vazir-Bold';
+    	src: url({% static 'fonts/Vazir/Vazir-Bold.ttf' %});
+    	}
+    
+    	@font-face {
+    	font-family: 'Vazir-SemiBold';
+    	src: url({% static 'fonts/Vazir/Vazir-Black.ttf' %});
+    	}
+    </style>
+    <!--* end font style css *-->
+    
+</head>
+
+
+<body>
+<!-- loader  -->
+<div class="spinner-wrapper">
+	<div class="spinner">
+		<div class="double-bounce1"></div>
+		<div class="double-bounce2"></div>
+	</div>
+</div>
+
+<section id="home"></section>
+<!--* base top navbar  *-->
+	<header>
+	<div class="container-fluid">
+		<div class="section">
+				<nav class="navbar navbar-expand-xl navbar-light bg-white fixed-top bg-primary rounded shadow home-navbar">
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<i class="fas fa-ellipsis-v "></i>
+					</button>
+
+                <a class="navbar-brand hide-in-mobile" href="https://ceckiau.ir"><img src={% static "img/ceckiau-ir-logo.png" %} alt="ceckiau.ir logo"> </a>
+
+						{% if user.is_authenticated  %}
+							<div class="btn-group pr-5 hide-in-desktop">
+								<button type="button" class="btn dropdown-toggle nav-profile-dropdown-toggle d-flex pbtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								خوش آمدید, {{user.profile.fname}}&nbsp;<i class="fas fa-caret-down align-self-center" aria-hidden="true"></i>
+								</button>
+								<div class="dropdown-menu profile-dropdown">
+								<a class="profile-dropdown-item dropdown-item" href="{% url 'app-account:profile' %}"><i class="far fa-address-card" aria-hidden="true"></i> پروفایل </a>
+								{% if request.user.is_superuser %}
+								<a class="profile-dropdown-item dropdown-item" href="/boldozer/"><i class="fas fa-tools" aria-hidden="true"></i> ادمین</a>
+								{% endif %}
+								{% if user.profile.is_author or user.profile.is_teacher or user.is_superuser %}
+								<a class="profile-dropdown-item dropdown-item" href="/panel/"><i class="fas fa-palette" aria-hidden="true"></i> پنل مدیریت</a>
+								{% endif %}
+                                <a class="profile-dropdown-item dropdown-item" href="{% url 'app-account:reset-password' %}"><i class="fas fa-key" aria-hidden="true"></i> تغییر کلمه عبور </a>
+								<div class="dropdown-divider"></div>
+								<a class="profile-dropdown-item-red dropdown-item" href="{% url 'app-main:logout' %}"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> خروج</a>
+								</div>
+							</div>
+						{% else %}
+							<a class="hide-in-desktop" href={% url 'app-account:signup' %}><button class="btn cec-btn-green d-inline mr-3"><i class="fas fa-user-plus"></i> عضویت در سایت</button></a>
+							<button class="btn cec-btn-pyblue d-inline float-right hide-in-desktop" data-toggle="modal" data-target="#loginModal"><i class="fas fa-user-tie"></i> ورود</button>
+						{% endif %}
+
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						  <ul class="navbar-nav mr-auto">
+
+							{% if request.path == "/" %}
+								<li class="nav-item  pl-3 pr-3 link my-nav-active">
+							  		<a class="nav-link cec-text-pyblue nav-active" href="#home">خانه</a>
+							  	</li>
+							{% else %}
+							   <li class="nav-item  pl-3 pr-3 link">
+							    	<a class="nav-link cec-text-pyblue" href="/">خانه</a>
+							   </li>
+							 {% endif %}
+
+							 {% if request.path == "/blog/" %}
+							  <li class="nav-item  pl-3 pr-3 link my-nav-active">
+							  		<a class="nav-link cec-text-pyblue nav-active-blog" href={% url 'app-main:blog' %}>بلاگ</a>
+							  	</li>
+							 {% else %}
+							  	<li class="nav-item  pl-3 pr-3 link">
+							  		<a class="nav-link cec-text-pyblue" href={% url 'app-main:blog' %}>بلاگ</a>
+							  	</li>
+							 {% endif %}
+
+
+                             {% if request.path == "/members/" %}
+                          		<li class="nav-item pl-3 pr-3 link my-nav-active">
+							  		<a class="nav-link cec-text-pyblue nav-active-cec-members" href="{% url 'app-main:cec-members' %}">معرفی انجمن</a>
+                          		</li>
+                            {% else %}
+                          		<li class="nav-item pl-3 pr-3 link">
+                            		<a class="nav-link cec-text-pyblue " href="{% url 'app-main:cec-members' %}">معرفی انجمن</a>
+                          		</li>
+                            {% endif %}
+
+
+							<!-- <li class="nav-item dropdown pl-3 pr-3 link">
+							  <a class="nav-link cec-text-pyblue dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								دوره ها
+							  </a>
+							  <div class="dropdown-menu my-dropdown" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item link text-left" href="#"><i class="fas fa-code"></i> برنامه نویسی</a>
+								<a class="dropdown-item link text-left" href="#"> <i class="fas fa-desktop"></i> طراحی وب سایت</a>
+								<a class="dropdown-item link text-left" href="#"> <i class="fas fa-gamepad"></i> بازی های ویدیویی</a>
+								<a class="dropdown-item link text-left" href="#"><i class="fab fa-adobe"></i> فتوشاپ</a>
+							  </div>
+							</li> -->
+
+							{% if request.path == "/courses/" %}
+							  <li class="nav-item  pl-3 pr-3 link my-nav-active">
+							  		<a class="nav-link cec-text-pyblue nav-active-course" href={% url 'app-course:courses' %}>دوره ها</a>
+							  	</li>
+							  {% else %}
+							  	<li class="nav-item  pl-3 pr-3 link">
+							  		<a class="nav-link cec-text-pyblue" href={% url 'app-course:courses' %}>دوره ها</a>
+							  	</li>
+							  {% endif %}
+
+                         	<li class="nav-item pl-3 pr-3 link">
+								<a href="" class="nav-link cec-text-pyblue " data-toggle="modal" data-target="#contactModal">تماس با ما</a>
+							</li>
+
+                          	{% if request.path == "/roadmap/" %}
+								    <li class="nav-item pl-3 pr-3 link my-nav-active">
+										<a href={% url 'app-main:roadmap' %} class="nav-link cec-text-green nav-active-roadmap">نقشه راه آینده</a>
+									</li>
+								{% else %}
+								    <li class="nav-item pl-3 pr-3 link">
+										<a href={% url 'app-main:roadmap' %} class="nav-link cec-text-green">نقشه راه آینده</a>
+									</li>
+								{% endif %}
+
+
+								{% if request.path == "/team/" %}
+									<li class="nav-item pl-3 pr-3 link my-nav-active">
+										<a href={% url 'app-main:team' %} class="nav-link cec-text-pyblue nav-active-team">تیم فنی</a>
+									</li>
+								{% else %}
+									<li class="nav-item pl-3 pr-3 link">
+										<a href={% url 'app-main:team' %} class="nav-link cec-text-pyblue">تیم فنی</a>
+									</li>
+								{% endif %}
+
+						  </ul>
+						  <hr class="hide-in-mobile">
+						  {% if not user.is_authenticated %}
+						  	<a class="hide-in-mobile" href={% url 'app-account:signup' %}><button class="btn cec-btn-green d-inline mr-3" style="border-top-left-radius:0; border-bottom-left-radius:0;"><i class="fas fa-user-plus"></i> عضویت در سایت</button></a>
+						  	<button class="btn cec-btn-pyblue d-inline float-right hide-in-mobile" data-toggle="modal" data-target="#loginModal" style="border-top-right-radius:0; border-bottom-right-radius:0;"><i class="fas fa-user-tie"></i> ورود</button>
+						  {% endif %}
+
+						  {% if user.is_authenticated  %}
+						  <div class="btn-group pr-5 hide-in-mobile">
+								<button type="button" class="btn dropdown-toggle nav-profile-dropdown-toggle pbtn d-flex" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									خوش آمدید, {{user.profile.fname}} {{user.profile.lname}}  &nbsp;<i class="fas fa-caret-down align-self-center" aria-hidden="true"></i>
+								</button>
+								{% if user.profile.avatar %}
+								<img class="profile-dropdown-avatar" src="{{user.profile.avatar.url}}" alt="{{user.profile.fname}} {{user.profile.lname}}" loading="lazy">
+								{% else %}
+
+									<img class="profile-dropdown-avatar" src="{% gravatar_url user.email 150 %}" alt="" loading="lazy">
+								{% endif %}
+
+								<div class="dropdown-menu profile-dropdown">
+								<a class="profile-dropdown-item dropdown-item" href="{% url 'app-account:profile' %}"><i class="far fa-address-card" aria-hidden="true"></i> پروفایل </a>
+								{% if request.user.is_superuser %}
+								<a class="profile-dropdown-item dropdown-item" href="/boldozer/"><i class="fas fa-tools" aria-hidden="true"></i> ادمین</a>
+								{% endif %}
+
+								{% if user.profile.is_author or user.profile.is_teacher or user.is_superuser %}
+								<a class="profile-dropdown-item dropdown-item" href="/panel/"><i class="fas fa-palette" aria-hidden="true"></i> پنل مدیریت</a>
+								{% endif %}
+
+                                <a class="profile-dropdown-item dropdown-item" href="{% url 'app-account:reset-password' %}"><i class="fas fa-key" aria-hidden="true"></i> تغییر کلمه عبور </a>
+								<div class="dropdown-divider"></div>
+								<a class="profile-dropdown-item-red dropdown-item" href="{% url 'app-main:logout' %}"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> خروج</a>
+								</div>
+							</div>
+						  {% endif %}
+
+						</div>
+					  </nav>
+		</div>
+	</div>
+</header>
+
+<!--** TOAST **-->
+<div class="container">
+{% if messages %}
+	{% for message in messages %}
+		<div id="toast"style="z-index: 9999">
+			<div id="img">
+				<i class="fas fa-magic"></i>
+			</div>
+			<div id="desc">
+				<h4 class="justify-content-center align-self-center text-center m-0 p-0 d-flex">{{ message }}</h4>
+			</div>
+		</div>
+	 {% endfor %}
+{% endif %}
+
+<!--** TOAST Script **-->
+<script>
+{% comment %} var x = document.getElementById("toast")
+		x.className = "show";
+		setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4800);
+		document.getElementById("toast").style.backgroundColor = 'red'; {% endcomment %}
+{% if messages %}
+	{% for message in messages %}
+		var x = document.getElementById("toast")
+		x.className = "show";
+		setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4800);
+		{% if message.tags == "success" %}
+			document.getElementById("toast").style.backgroundColor = 'green';
+
+		{% elif message.tags == "warning" %}
+			document.getElementById("toast").style.backgroundColor = '#ff7200';
+
+		{% elif message.tags == "error" %}
+			document.getElementById("toast").style.backgroundColor = 'red';
+
+		{% elif message.tags == "debug" %}
+			document.getElementById("toast").style.backgroundColor = 'blue';
+
+		{% elif message.tags == "info" %}
+			document.getElementById("toast").style.backgroundColor = 'grey';
+
+		{% endif %}
+    {% endfor %}
+{% endif %}
+</script>
+
+</div>
+
+{% if errorـusername %}
+	<!--* errorLogin Modal *-->
+	<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content ">
+					<div class="modal-header justify-content-center">
+						<h4 class="modal-title" id="exampleModalLabel">ورود به سایت</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 0; margin: 0;right: 0 !important; position: absolute;">
+								<span aria-hidden="true">&times;</span>
+					</button>
+                </div>
+
+					<form action="/login/" method="post">
+						{% csrf_token %}
+						<div class="modal-body ">
+								{# alert  #}
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<strong>نام کاربری </strong> موجود نمی باشد!
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="form-group">
+								<label for="username" class="col-form-label"><i class="far fa-user text-secondary"></i>  ایمیل / شماره دانشجویی</label>
+								<input name ="cecusername" type="text" class="form-control" id="username" title="" required >
+							</div>
+							<div class="form-group">
+								<label for="password" class="col-form-label"> <i class="fas fa-shield-alt text-secondary"></i> کلمه عبور</label>
+								<input name = "cecpassword"  type="password" class="form-control" id="password" title="" required>
+								<h6 onclick="ShowPass()" class="text-right pt-1" style="cursor:pointer;left: 21px;position: absolute;"> <i  class="far fa-eye"></i></h6>
+							</div>
+<a class="forgetpass_link" href={% url 'app-account:reset-password' %}>فراموشی کلمه عبور!</a>
+
+                        	<!-- <div class="bibot-captcha mb-3" data-sitekey="ae57cbdb16c5c6de696c7ce153ffe873" data-lang="fa"></div> -->
+
+						</div>
+					<div class="modal-footer justify-content-start">
+						<button type="submit" class="btn cec-btn-pyblue w-25 mybtn-dark">ورود</button>
+                    	<a class="signup_link text-left" href={% url 'app-account:signup' %}>حساب کاربری ندارم!</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+{% elif errorـpassword %}
+<!--* errorLogin Modal *-->
+	<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content ">
+					<div class="modal-header justify-content-center">
+						<h4 class="modal-title" id="exampleModalLabel">ورود به سایت</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 0; margin: 0;right: 0 !important; position: absolute;">
+								<span aria-hidden="true">&times;</span>
+                    	</button>
+					</div>
+					<form action="/login/" method="post">
+						{% csrf_token %}
+						<div class="modal-body ">
+								{# alert  #}
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									  <strong>نام کاربری </strong> یا <strong>کلمه عبور</strong> صحیح نمی باشد!
+									  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									  </button>
+								</div>
+								<div class="form-group">
+									<label for="username" class="col-form-label"><i class="far fa-user text-secondary"></i> ایمیل / شماره دانشجویی</label>
+									<input name ="cecusername" type="text" class="form-control" id="username" title="" required >
+								</div>
+								<div class="form-group">
+									<label for="password" class="col-form-label"> <i class="fas fa-shield-alt text-secondary"></i> کلمه عبور</label>
+									<input name = "cecpassword"  type="password" class="form-control" id="password" title="" required>
+									<h6 onclick="ShowPass()" class="text-right pt-1" style="cursor:pointer;left: 21px;position: absolute;"> <i  class="far fa-eye"></i></h6>
+								</div>
+                        <a class="forgetpass_link" href={% url 'app-account:reset-password' %}>فراموشی کلمه عبور!</a>
+                        		<!-- <div class="bibot-captcha mb-3" data-sitekey="ae57cbdb16c5c6de696c7ce153ffe873" data-lang="fa"></div> -->
+
+					</div>
+					<div class="modal-footer justify-content-start">
+						<button type="submit" class="btn cec-btn-pyblue w-25 mybtn-dark">ورود</button>
+                    	<a class="signup_link text-left" href={% url 'app-account:signup' %}>حساب کاربری ندارم!</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+{% elif error_captcha %}
+<!--* errorLogin Modal *-->
+	<div class="modal fade " id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content ">
+					<div class="modal-header justify-content-center">
+						<h4 class="modal-title" id="exampleModalLabel">ورود به سایت</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 0; margin: 0;right: 0 !important; position: absolute;">
+								<span aria-hidden="true">&times;</span>
+                    	</button>
+					</div>
+					<form action="/login/" method="post">
+						{% csrf_token %}
+						<div class="modal-body ">
+								{# alert  #}
+								<div class="alert alert-danger alert-dismissible fade show" role="alert">
+									  <strong>تایید هویت</strong> معتبر نمی باشد !
+									  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									    <span aria-hidden="true">&times;</span>
+									  </button>
+								</div>
+								<div class="form-group">
+									<label for="username" class="col-form-label"><i class="far fa-user text-secondary"></i> ایمیل / شماره دانشجویی</label>
+									<input name ="cecusername" type="text" class="form-control" id="username" title="" required >
+								</div>
+								<div class="form-group">
+									<label for="password" class="col-form-label"> <i class="fas fa-shield-alt text-secondary"></i> کلمه عبور</label>
+									<input name = "cecpassword"  type="password" class="form-control" id="password" title="" required>
+									<h6 onclick="ShowPass()" class="text-right pt-1" style="cursor:pointer;left: 21px;position: absolute;"> <i  class="far fa-eye"></i></h6>
+								</div>
+
+                        		<!-- <div class="bibot-captcha mb-3" data-sitekey="ae57cbdb16c5c6de696c7ce153ffe873" data-lang="fa"></div> -->
+<a class="forgetpass_link" href={% url 'app-account:reset-password' %}>فراموشی کلمه عبور!</a>
+					</div>
+					<div class="modal-footer justify-content-start">
+						<button type="submit" class="btn cec-btn-pyblue w-25 mybtn-dark">ورود</button>
+                    	<a class="signup_link text-left" href={% url 'app-account:signup' %}>حساب کاربری ندارم!</a>
+					</div>
+					</form>
+				</div>
+			</div>
+		</div>
+{% endif %}
+{% block content %}
+
+{% endblock content %}
+<!--* Footer  *-->
+<footer>
+	<br>
+	<div class="card-panel myfooter">
+		<div class="row">
+			<div class="col-lg-4 col-md-6 col-12 footer-links mb-4">
+				<h5 class="text-center">لینک های مفید</h5>
+				<hr class="w-75">
+				<ul>
+					{% if request.path == "/" %}
+                	<li>
+						<a href="#home"><i class="fas fa-home" aria-hidden="true"></i> خانه</a>
+					</li>
+                    {% else %}
+                    <li>
+                    	<a href="/"><i class="fas fa-home" aria-hidden="true"></i> خانه</a>
+                    </li>
+					{% endif %}
+                    <li>
+                    	<a href="http://kiau.ac.ir" ><i class="fas fa-globe-americas" aria-hidden="true"></i> وب سایت دانشگاه آزاد کرج</a>
+                    </li>
+					<li>
+						<a href="http://edu.kiau.ac.ir/"><i class="fas fa-user-graduate" aria-hidden="true"></i> سامانه دانشجویی</a>
+					</li>
+					<li>
+						<a href="http://dining.kiau.ac.ir/"><i class="fas fa-utensils" aria-hidden="true"></i> اتوماسیون تغذیه</a>
+					</li>
+					<li>
+						<a href={% url 'app-account:signup' %}> <i class="far fa-plus-square" aria-hidden="true"></i> عضویت در سایت</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-lg-4 col-md-6 col-12 footer-links mb-3">
+					<h5 class="text-center">راه های ارتباطی</h5>
+					<hr class="w-75">
+					<ul>
+						<li>
+							<a href="" data-toggle="modal" data-target="#contactModal"><i class="fas fa-phone"></i> تماس با ما</a>
+						</li>
+						<li>
+							<a href="" data-toggle="modal" data-target="#notokModal"><i class="far fa-comment-dots"></i> ارسال پیام از سایت</a>
+						</li>
+						<li>
+							<a href="" data-toggle="modal" data-target="#notokModal"><i class="far fa-envelope"></i> ارسال پست الکترونیک</a>
+						</li>
+						<li>
+							<a href="http://mecatronic.kiau.ac.ir"><i class="fas fa-building"></i> دانشکده مکاترونیک ، طبقه همکف</a>
+						</li>
+					</ul>
+			</div>
+
+			<div class="col-lg-4 col-md-6 col-12  footer-links mb-3">
+					<h5 class="text-center">شبکه های اجتماعی</h5>
+					<hr class="w-75">
+					<ul class="social-icon align-middle px-0">
+						<li class="text-center ">
+							<a href="https://telegram.me/CECkiau" target="blank"><i class=" align-middle d-inline fab fa-telegram"></i></a>
+							<a href="https://instagram.com/CECkiau" target="blank"><i class="align-middle d-inline fab fa-instagram"></i></a>
+							<a href="http://aparat.ir/ceckiau" target="blank"><div class="align-middle d-inline cec-aparat rounded-circle ir"></div></a>
+							<a onclick='window.scrollTo({top: 0, behavior: "smooth"});'><div class="shadow-sm go-top w-50 mx-auto mt-5 d-flex justify-content-center" style="cursor:pointer"><i class="fas fa-chevron-circle-up m-0 p-0 cec-text-pyblue" style="box-shadow: none ; background-color: #f8f8f8;"></i>&nbsp; برگشت به بالا</div></a>
+
+							<!-- <a href=""><img class="rounded-circle" src="https://cdn.iconscout.com/icon/free/png-512/aparat-569197.png"></a> -->
+						</li>
+					</ul>
+			</div>
+
+		</div>
+		<div class="row footer-copyright">
+			<p>طراحی شده توسط<br class="hide-in-desktop"><a href="https://ceckiau.ir/team/"> کارگروه برنامه نویسی انجمن علمی مهندسی کامپیوتر</a></p>
+		</div>
+	</div>
+</footer>
+
+
+<!--* Login Modal *-->
+	<div class="modal fade " id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content ">
+					<div class="modal-header justify-content-center">
+						<h4 class="modal-title" id="exampleModalLabel">ورود به سایت</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 0; margin: 0;right: 0 !important; position: absolute;">
+								<span aria-hidden="true">&times;</span>
+						</button>
+                	</div>
+
+					<form action="/login/" method="post">
+							{% csrf_token %}
+						<div class="modal-body">
+								<div class="form-group">
+									<label for="username" class="col-form-label"><i class="far fa-user text-secondary"></i> ایمیل / شماره دانشجویی</label>
+									<input name ="cecusername" type="text" class="form-control" id="username" title="" required >
+								</div>
+								<div class="form-group">
+									<label for="password" class="col-form-label"> <i class="fas fa-shield-alt text-secondary"></i> کلمه عبور</label>
+									<input name = "cecpassword"  type="password" class="form-control" id="password" title="" required>
+									<h6 onclick="ShowPass()" class="text-right pt-1" style="cursor:pointer;left: 21px;position: absolute;"><i class="far fa-eye"></i></h6>
+								</div>
+
+                       			 <!-- <div class="bibot-captcha mb-3" data-sitekey="ae57cbdb16c5c6de696c7ce153ffe873" data-lang="fa"></div> -->
+                        <a class="forgetpass_link" href={% url 'app-account:reset-password' %}>فراموشی کلمه عبور!</a>
+                   	 	</div>
+
+						<div class="modal-footer justify-content-start">
+							<button type="submit" class="btn cec-btn-pyblue w-25 mybtn-dark">ورود</button>
+                        	<a class="signup_link text-left" href={% url 'app-account:signup' %}>حساب کاربری ندارم!</a>
+						</div>
+                    </form>
+                  </div>
+			</div>
+		</div>
+
+<!--* contact us Modal *-->
+	<div class="modal fade " id="contactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content ">
+				<div class="modal-header justify-content-center">
+					<h4 class="modal-title text-center" id="exampleModalLabel"><i class="fas fa-phone-square justify-content-center align-self-center"></i> تماس با ما</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 0; margin: 0;right: 0 !important; position: absolute;">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="card bg-light mb-3" >
+						<div class="card-body">
+							<h5 class="card-title">سلام دوست عزیز</h5>
+							<h5 class="card-title" style="line-height : 2">شما میتوانید با پشتیبانی انجمن در تلگرام به آیدی	<a href="https://t.me/cec_online" class="text-danger">CEC_Online@ </a>	در ارتباط باشید.</h5>
+							<h5 class="card-title">منتظر نظرات و انتقادات شما هستیم :)</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!--* not ok Modal *-->
+	<div class="modal fade " id="notokModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content ">
+				<div class="modal-header justify-content-center">
+					<h4 class="modal-title text-center" id="exampleModalLabel"><i class="fas fa-code justify-content-center align-self-center"></i> ceckiau</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding-top: 0; margin: 0;right: 0 !important; position: absolute;">
+						<span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="card bg-light mb-3" >
+						<div class="card-body">
+							{% comment %} <h5 class="card-title">سلام دوست عزیز</h5> {% endcomment %}
+							<h5 class="card-title" style="line-height : 2">با عرض پوزش این بخش درحال حاضر دردسترس نمی باشد!</h5>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--* jquery 3.4.1 js link  *-->
+	<script src="{% static "lib/jquery/jquery-3.4.1.min.js" %}"></script>
+
+	<!--* bootstrap 4.2.1 rtl js link  *-->
+	<script src="{% static "lib/bootstrap-4.2.1-rtl/dist/js/bootstrap.min.js" %}"></script>
+
+	<!--* static js link  *-->
+	<script src="{% static "js/home.js" %}"></script>
+	{% block js_link %}
+	{% endblock js_link %}
+
+	<!--* bibot captcha js  *-->
+	<!-- <script src="https://cdn.bibot.ir/bibot.min.js"></script> -->
+
+	<script>
+		$(window).on("load",function(){
+			$(".spinner-wrapper").fadeOut("slow");
+		});
+	</script>
+
+</body>
+</html>

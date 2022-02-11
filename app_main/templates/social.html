@@ -1,0 +1,207 @@
+{% load static %}
+
+<!DOCTYPE HTML>
+<html lang="fa" dir="rtl">
+<head>
+	<title>انجمن علمی مهندسی کامپیوتر | دانشگاه آزاد کرج</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+
+	<!--* favicon *-->
+	<link rel="icon" href={% static "img/logo.png" %} type=img/png sizes="16x16">
+	
+	<!--* bootstrap 4.2.1 rtl css link *-->
+	<link rel="stylesheet" href={% static "lib/bootstrap-4.2.1-rtl/dist/css/rtl/bootstrap.min.css" %}>
+
+	<!--* font awsome 5.10 link  *-->
+	<link rel="stylesheet" href={% static "lib/fontawesome-free-5.10.2-web/css/all.min.css" %}><!-- Font -->
+			
+	<!--* static css links  *-->
+	<link href={% static 'css/home.css' %} rel="stylesheet">
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Exo&amp;display=swap">
+
+	
+</head>
+
+<style>
+	@font-face {
+	font-family: 'Vazir-ExtraLight';
+	src: url({% static 'fonts/Vazir/Vazir-Thin.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-Light';
+	src: url({% static 'fonts/Vazir/Vazir-Light.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-Regular';
+	src: url({% static 'fonts/Vazir/Vazir.ttf' %}); 
+	}
+	@font-face {
+	font-family: 'Vazir-Medium';
+	src: url({% static 'fonts/Vazir/Vazir-Medium.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-Bold';
+	src: url({% static 'fonts/Vazir/Vazir-Bold.ttf' %}); 
+	}
+
+	@font-face {
+	font-family: 'Vazir-SemiBold';
+	src: url({% static 'fonts/Vazir/Vazir-Black.ttf' %}); 
+	}
+body {
+	margin: 0;
+	width: 100%;
+	height: 100vh;
+	color: #fff;
+	background: linear-gradient(-45deg, #00eeff, #0088cc, #701183, #303030);
+	background-size: 400% 400%;
+	animation: gradientBG 13s ease infinite;
+	font-family: 'Vazir-Medium' !important
+}
+
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+</style>
+<body>
+<br>
+<br class="hide-on-mobile">
+<br class="hide-on-mobile">
+<br class="hide-on-mobile">
+	<div class="container">
+		<div class="row mb-4">
+			<div class="col-md-6 col-11 mx-auto">
+				<h4 class="text-center card text-dark p-3 rounded-pill">شبکه های اجتماعی CEC</h4>
+			</div>
+		</div>
+		<div class="row w-50 mx-auto">
+
+			<div class="col-lg-4 col-md-4 col-10 mx-auto my_social mb-4 d-flex cecinstagram">
+				<a href="https://instagram.com/ceckiau" class="mx-auto d-flex text-center">
+					<i class="fab fa-instagram mx-auto" aria-hidden="true" style="font-size: 57px;"></i>
+				</a>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-10 mx-auto my_social mb-4 d-flex cectelegram">
+				<a href="https://t.me/ceckiau" class="mx-auto d-flex text-center">
+					<i class="fab fa-telegram mx-auto" aria-hidden="true" style="font-size: 52px;"></i>
+				</a>
+			</div>
+
+			<div class="col-lg-4 col-md-4 col-10 mx-auto my_social mb-4 d-flex cecaparat">
+				<a href="http://aparat.com/ceckiau" class="mx-auto d-flex text-center">
+					<img height="50px" src="http://www.brandgradients.com/img/logos/aparat-hex-colors-gradient-logo.png" alt="">
+				</a>
+			</div>
+
+		</div>
+
+		<div class="row mb-4 mt-4">
+			<div class="col-md-4 col-10 mx-auto">
+				<h4 class="text-center card text-dark p-3 rounded-pill">پشتیبانی 24 ساعته تلگرام</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-md-4 col-10 mx-auto my_social mb-4 d-flex ceconline">
+				<a href="https://t.me/cec_online" class="mx-auto d-flex text-center">
+					<i class="fas fa-headset mx-auto" aria-hidden="true" style="font-size: 50px;"></i>
+				</a>
+			</div>
+		</div>
+
+		<div class="row mb-4 mt-3">
+			<div class="col-md-2 col-8 mx-auto">
+				<a href="https://ceckiau.ir">
+					<h4 class="m_login text-center card p-3 rounded-pill">ورود به سایت</h4>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+<style>
+	@media (max-width: 567px){
+		.hide-on-mobile{
+			display: none;
+		}
+	}
+	.m_login{
+		background: rgb(34, 255, 218);
+		color: rgb(0, 92, 87);
+		border: solid 1px white;
+		transition: 0.5s ease;
+
+
+	}
+	.m_login:hover{
+		transition: 0.5s ease;
+		transform: scale(1.04);
+		box-shadow: 5px 10px 5px rgba(34, 255, 218, 0.363);
+
+	}
+
+	.my_social a{
+		padding: 23px 30px 23px 30px;
+		background: white;
+		border-radius: 15px;
+		border: 2px solid #eee;
+		background: transparent;
+		transition: 1s ease all;
+		color: white;
+
+	}
+	.cecinstagram a:hover{
+		background: #e1306c;
+		/* transform: scale(1.2); */
+		transition: 1s ease all;
+		/* border: 2px solid #720026; */
+	}
+
+	.cectelegram a:hover{
+		background: #0088cc;
+		/* transform: scale(1.2); */
+		transition: 1s ease all;
+		/* border: 2px solid #003149; */
+	}
+
+	.cecaparat a:hover{
+		background: #ea1d5d;
+		/* transform: scale(1.2); */
+		transition: 1s ease all;
+		/* border: 2px solid #52001a; */
+	}
+
+	.ceconline a:hover{
+		background: #ff7200;
+;
+		/* transform: scale(1.2); */
+		transition: 1s ease all;
+		/* border: 2px solid #883d00; */
+	}
+</style>
+
+
+
+	<!-- *** SCIPTS *** -->
+	<!--* jquery 3.4.1 js link  *-->
+	<script src={% static "lib/jquery/jquery-3.4.1.min.js" %}></script>
+
+	<!--* bootstrap 4.2.1 rtl js link  *-->
+	<script src={% static "lib/bootstrap-4.2.1-rtl/dist/js/bootstrap.min.js" %}></script>
+
+</body>
+
+</html>

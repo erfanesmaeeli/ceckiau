@@ -1,0 +1,100 @@
+{% extends "panel/base.html" %}
+{% load static %}
+{% load jformat %}
+{% load erfan_calendar1 %}
+
+
+{% block css %}
+{{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 grid-margin">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex align-items-end flex-wrap">
+        <div class="ml-md-3 ml-xl-5">
+          {% if user.is_superuser %}
+          <h2>مدیریت نویسندگان</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex mt-3 erfan-breadcrumb shadow-sm">
+      <a href="/"><i class="align-self-center mdi mdi-home text-muted cec-text-pyblue"></i></a>
+      <p class="align-self-center text-muted mb-0 hover-cursor">&nbsp;/&nbsp;<a href="/panel/" class="cec-text-pyblue">داشبورد</a>&nbsp;/&nbsp;</p>
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;بلاگ&nbsp;/&nbsp;</a> </p>
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;مدیریت نویسندگان&nbsp;&nbsp;</a> </p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="authors_table" class="table">
+            <thead>
+              <tr>
+                <th>آواتار</th>
+                <th>نام نام خانوادگی</th>
+                <th>پست الکترونیکی</th>
+                <th>نام کاربری</th>
+                <th>تلفن همراه</th>
+                <th>تعداد مقالات</th>
+                <th>تاریخ عضویت در سایت</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for author in authors %}
+              <tr>
+                <td style="min-width:50px;max-width:100px;">
+                    <img loading="lazy" data-toggle="modal" data-target="#author_avatar_{{author.id}}" class="erfan-table-image mx-auto d-flex" width="100" height="150" src="{{author.avatar.url}}" alt="{{author.id}}" style="
+                    width:75px !important; height:75px !important; cursor:pointer">
+                </td>
+                <td class="text-right">{{author.get_full_name}}</td>
+                <td class="text-center">{{author.email}}</td>
+                <td class="text-center">{{author.user.username}}</td>
+                <td class="text-center">{{author.phone}}</td>
+                <td class="text-center">{{author.user.author.count}}</td>
+                <td class="text-center">{{author.DateCreate | jalali_date}}</td>
+              </tr>
+              <!--author Avatar Modal -->
+                <div class="modal fade" id="author_avatar_{{author.id}}" tabindex="-1" aria-labelledby="author_avatar_{{author.id}}ModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-center cec-text-pyblue mx-auto d-flex" id="author_avatar_{{author.id}}ModalLabel">{{author.get_full_name}}</h5>
+                      </div>
+                      <div class="modal-body text-justify text-right">
+                        <img loading="lazy" src="{{author.avatar.url}}" class="h-auto w-50 mx-auto d-flex" alt="{{author.id}}">
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary mx-auto" data-dismiss="modal">حله</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </tbody>
+          </table>
+          <br>
+          <p class="text-muted">
+            <span data-toggle="modal" data-target="#publish_modal" class="mdi mdi-checkbox-marked-circle-outline icon-sm text-success"></span>
+            مرتب‌سازی شده بر اساس تعداد پست‌های نویسندگان
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+{{ block.super }}
+{% endblock %}

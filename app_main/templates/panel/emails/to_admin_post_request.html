@@ -1,0 +1,19 @@
+{% load jformat %}
+
+{% autoescape off %}
+{{user.first_name}} {{user.last_name}} یک پست جدید در سایت ایجاد کرده است و منتظر تایید مدیر سایت میباشد.
+
+عنوان پست: {{post.title}}
+آدرس پست در پنل مدیریت: https://ceckiau.ir{% url 'app-main:show-post' id=post.id %}
+تاریخ ایجاد: {{post.DateCreate | jformat:"%d / %m / %Y"}} - {{post.TimeCreate |time:"H:i"}}
+
+وضعیت پست: {{post.get_status}}{% if post.show_author %}
+نمایش نام نویسنده در سایت: بله{% else %}
+نمایش نام نویسنده در سایت: خیر{% endif %}{% if post.publish and post.status == 2 %}
+انتشار در سایت: بله{% else %}
+انتشار در سایت: خیر{% endif %}
+
+
+انجمن علمی مهندسی کامپیوتر
+دانشگاه آزاد اسلامی واحد کرج
+{% endautoescape %}

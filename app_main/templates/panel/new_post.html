@@ -1,0 +1,241 @@
+{% extends "panel/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load form_tags %}
+
+
+{% block css %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 grid-margin">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex align-items-end flex-wrap">
+        <div class="ml-md-3 ml-xl-5">
+          <h2>ایجاد پست جدید در بلاگ</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex mt-3 erfan-breadcrumb shadow-sm">
+      <a href="/"><i class="align-self-center mdi mdi-home text-muted cec-text-pyblue"></i></a>
+      <p class="align-self-center text-muted mb-0 hover-cursor">&nbsp;/&nbsp;<a href="/panel/" class="cec-text-pyblue">داشبورد</a>&nbsp;/&nbsp;</p>
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;بلاگ&nbsp;/&nbsp;</a> </p>
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;ایجاد پست جدید&nbsp;&nbsp;</a> </p>
+    </div>
+  </div>
+</div>
+
+{% if done %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body bg-success shadow-sm p-5" style="border-radius:10px">
+        <h4 class="text-light text-center m-0"><a href="{{post_url}}" class="text-light">پست</a> شما باموفقیت ثبت گردید  <span class="mdi mdi-checkbox-marked-circle-outline icon-md"></span></h4>
+        {% if draft %}
+        <h5 class="text-light text-center m-0 mt-3">وضعیت: پیش‌نویس</h5>
+        {% else %}
+          {% if request.user.is_superuser %}
+          <h5 class="text-light text-center m-0 mt-3">وضعیت: تایید شده</h5>
+          {% else %}
+          <h5 class="text-light text-center m-0 mt-3">وضعیت: درانتظار تایید مدیر</h5>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% elif error %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body bg-danger shadow-sm p-5" style="border-radius:10px">
+        <h4 class="text-light text-center m-0">مشکلی پیش آمده  <span class="mdi mdi-alert"></span></h4>
+        <h5 class="text-light text-center m-0 mt-3">لطفا با مدیر سایت درمیان بزارید</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% elif has_exists %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body bg-danger shadow-sm p-5" style="border-radius:10px">
+        <h4 class="text-light text-center m-0">مشکلی پیش آمده  <span class="mdi mdi-alert"></span></h4>
+        <h5 class="text-light text-center m-0 mt-3">این پست قبلا ثبت شده است</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+
+{% if not admin_message %}
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body cec-text-pyblue">
+        <span class="mdi mdi-message-alert-outline"></span>
+        نویسنده عزیز لطفا به موارد زیر توجه داشته باشید:
+        <div class="card-body mt-3 erfan-chat-1">
+          <ul class="p-0 m-0" style="line-height:2">
+            <li class="pb-1 text-justify">عنوان پست را فارسی و کوتاه بنویسید.</li>
+
+            <li class="pb-1 text-justify">محتوای متن مقاله شما نباید تبلیغاتی باشد.</li>
+            <li class="pb-1 text-justify">تمامی متن خود را به غیر از عنوان‌ها وتیترها را جاستیفای (justify کنید.</li>
+            <li class="pb-1 text-justify">سایز عکس مقاله شما باید مربعی (1:1) و حجم آن کمتر از 300 کیلوبایت باشد.</li>
+            <li class="pb-1 text-justify">به علائم نگارشی داخل مقاله بسیار دقت فرمایید از جمله نیم فاصله‌ها (ctrl shift 2) و ...</li>
+            <li class="pb-1 text-justify">از تغییر دادن فونت در تکست ادیتور جدا خودداری کنید و به حالت پیش‌فرض (فونت Vazir) دست نزنید.</li>
+            <li class="pb-1 text-justify">در نوشتن مقاله خود از منابع معتبر و مراجع مورد تایید در حوزه‌ی رشته مهندسی کامپیوتر استفاده نمایید.</li>
+            <li class="pb-1 text-justify">سعی کنید داخل متن جهت مشخص کردن عنوان‌ها و تیترها از تگ‌های H2  یا H3 استفاده کنید همچنین از نوشتن تیتر‌های طولانی خودداری کنید.</li>
+            <li class="pb-1 text-justify">محتوای بخش متاتگ یک توضیح مختصر و کوتاه از مقاله‌ی شما می‌باشد که در گوگل ایندکس می‌شود. این بخش را به‌خوبی پر نمایید. (حداکثر 160 حرف)</li>
+            <li class="pb-1 text-justify">درصورتیکه که در نوشتن این مقاله از منبعی استفاده کرده‌اید جهت رعایت حفظ قانون کپی‌رایت، منابع استفاده شده را در انتهای مقاله خود نام ببرید.</li>
+            <li class="pb-1 text-justify">سعی کنید متن خود را در ادیتور موجود در سایت بنویسید و از نوشتن متن در جای دیگر و کپی کردن آن در این بخش خودداری کنید. (جهت مرتب بودن و نظم و کنترل بهتر متن)</li>
+            <li class="pb-1 text-justify">پیوند یکتا همان آدرس پست شما در سایت می‌شود که در بخش url سایت می‌آید که میبایست انگلیسی باشد و اگر چند کلمه دارد، توسط "-" از هم جدا شوند ( بطور مثال: hello-world)</li>
+            <li class="pb-1 text-justify">محتویات مقاله ازجمله عکس اصلی پست، تصاویر داخل پست، متن ، ویدئو و ... باید تابع قوانین جمهوری اسلامی باشد. (بطور مثال از انتخاب عکس خانم بدون حجاب خودداری فرمایید)</li>
+            <li class="pb-1 text-justify">اگر مقاله‌ی خود را پس از تایید شدن ویرایش نمایید، مجدد به حالت درانتظار تایید قرار میگیرد و مقاله شما از داخل سایت حذف می‌شود تا زمانیکه تایید شد. لذا بهتر است قبل از ویرایش به مدیران سایت اطلاع دهید. (این مورد موقتی می‌باشد)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if form.errors %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+
+            {% for key, value in form.errors.items %}
+                <span class="fieldWrapper">
+                    {{ form.fields|get_label:key|safe }}:{{ value }}
+                </span>
+            {% endfor %}
+        </div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% elif formset.total_error_count %}
+    <div class="alert alert-danger alert-dismissible col-12 mx-1" role="alert">
+        <div id="form_errors">
+            {% if formset.non_form_errors %}
+                {{ formset.non_form_errors }}
+            {% endif %}
+            {% for form in formset.forms %}
+                {% if form.errors %}
+                    Form number {{ forloop.counter }}:
+                    <ul class="errorlist">
+                    {% for key, error in form.errors.items %}
+                        <li>{{form.fields|get_label:key}}
+                            <ul class="errorlist">
+                                <li>{{error}}</li>
+                            </ul>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+{% endif %}
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form class="forms-sample" id="your-form" action="." method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form.media }}
+
+          <div class="form-check form-check-flat form-check-primary mb-4">
+            <label class="form-check-label">
+              در سایت نمایش داده شود
+              {{form.publish}}
+            </label>
+            <span class="text-muted text-small">(درصورت غیرفعال گذاشتن این قسمت، پست شما بصورت پیش‌نویس ذخیره می‌شود)</span>
+          </div>
+
+          <div class="form-check form-check-flat form-check-primary mb-4">
+            <label class="form-check-label">
+              نام نویسنده نمایش داده شود
+              {{form.show_author}}
+            </label>
+            <span class="text-muted text-small">(درصورت غیرفعال گذاشتن این قسمت، نام نویسنده به «انجمن علمی کامپیوتر» تغییر میکند)</span>
+          </div>
+
+          <div class="form-group mb-4">
+            <!-- <label for="exampleInputName1">پیوند یکتا</label> -->
+            {{form.slug|as_crispy_field}}
+          </div>
+
+          <div class="form-group mb-4">
+            <!-- <label for="exampleInputName1">عنوان</label> -->
+            {{form.title |as_crispy_field}}
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-12 mx-auto mb-2">
+              <div class="form-group select-box">
+                <!-- <label for="exampleSelectGender">دسته‌بندی</label> -->
+                {{form.category |as_crispy_field}}
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mx-auto mb-2">
+              <div class="form-group">
+                {% if not user.is_superuser %}
+                <label for="exampleInputName1"><span class="mdi mdi-account-outline icon-sm"></span> نویسنده</label>
+                <input type="text" class="form-control" value="{{profile.get_full_name}}" disabled>
+                {% endif %}
+                {{form.author |as_crispy_field}}
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mx-auto mb-2">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-image-outline icon-sm"></span> عکس پست*</label>
+                <div class="file-upload">
+                  <div class="file-select">
+                    <div class="file-select-button" id="fileName">انتخاب کنید</div>
+                    <div class="file-select-name" id="noFile">هیچ فایلی انتخاب نشده است</div>
+                    {{form.image |as_crispy_field}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-5">
+            <!-- <label for="exampleTextarea1">محتوای پست</label> -->
+              {{form.text |as_crispy_field}}
+          </div>
+
+          <div class="form-group">
+            <!-- <label for="exampleTextarea-met">محتوای متاتگ(SEO)</label> -->
+            {{form.meta_description |as_crispy_field}}
+          </div>
+
+          <button type="submit" class="btn btn-success mr-2">ایجاد کنید</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block js %}
+{{ block.super }}
+{% comment %} Tinymce Text Editor Config {% endcomment %}
+<script src="{% static "panel/js/tiny-editor.js" %}" charset="utf-8"></script>
+</script>
+{% endblock %}

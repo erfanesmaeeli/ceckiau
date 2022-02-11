@@ -1,0 +1,188 @@
+{% extends "panel/base.html" %}
+{% load static %}
+{% load erfan_calendar1 %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "panel/css/persian.datepicker.css" %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 grid-margin">
+    <div class="d-flex justify-content-between flex-wrap">
+      <div class="d-flex align-items-end flex-wrap">
+        <div class="ml-md-3 ml-xl-5">
+          <h2>تنظیمات</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex mt-3 erfan-breadcrumb shadow-sm">
+      <a href="/"><i class="align-self-center mdi mdi-home text-muted cec-text-pyblue"></i></a>
+      <p class="align-self-center text-muted mb-0 hover-cursor">&nbsp;/&nbsp;<a href="/panel/" class="cec-text-pyblue">داشبورد</a>&nbsp;/&nbsp;</p>
+      <p class="align-self-center text-primary mb-0"> <a class="text-muted">&nbsp;تنظیمات&nbsp;&nbsp;</a> </p>
+
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body cec-text-pyblue">
+        <div class="card-body mr-0 pr-0 pt-2 pb-md-2 pb-0">
+          <h6 class="d-table d-md-inline mb-3 mb-md-0"><span class="mdi mdi-calendar-clock"></span> تاریخ عضویت در سایت:&nbsp;<p class="mt-md-0 mt-1 d-md-inline d-block ml-5 mb-md-0 text-dark font-weight-light">{{profile.DateCreate |jalali_date}} ساعت {{profile.DateCreate | time:'H:i'}}</p> </h6>
+
+          <h6 class="d-table d-md-inline mb-3 mb-md-0 "><span class="mdi mdi-lightbulb-outline"></span> سطح دسترسی: <p class="mt-md-1 mt-1 d-md-inline d-block ml-5 mb-md-0 text-dark font-weight-light">
+            {% if user.is_superuser %}
+            مدیر کل
+            {% elif profile.is_author %}
+            نویسنده
+            {% elif profile.is_teacher %}
+            مدرس
+            {% else %}
+            کاربر عادی
+            {% endif %}
+          </p> </h6>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <form class="forms-sample" id="your-form" action="." method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-account-outline icon-sm"></span> نام*</label>
+                <input type="text" name="cecfname" class="form-control" id="exampleInputName1" value="{{user.first_name}}" title=""  required>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-account-outline icon-sm"></span> نام خانوادگی*</label>
+                <input type="text" name="ceclname" class="form-control" id="exampleInputName1" value="{{user.last_name}}" title=""  required>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-email-outline icon-sm"></span> پست الکترونیکی*</label>
+                {% if user.is_superuser %}
+                <input type="text" name="email" class="form-control" id="exampleInputName1" value="{{user.email}}" title="" required style="direction:ltr">
+                {% else %}
+                <input type="text" name="email" class="form-control" id="exampleInputName1" value="{{user.email}}" readonly title="" required style="direction:ltr">
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-phone-outline icon-sm"></span> تلفن همراه</label>
+                <input type="number" name="cecphonenumber" class="form-control" id="exampleInputName1" value="{% if profile.phone %}{{profile.phone}}{% endif %}" placeholder="شماره‌ای ثبت نشده است" title="" >
+                <small class="text-small text-muted pr-2">با صفر شروع شود</small>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+              <div class="form-group select-box">
+                <label for="exampleSelectGender"><span class="mdi mdi-gender-male-female icon-sm"></span> جنسیت</label>
+                <select class="form-control" id="exampleSelectGender" name="cecsex" title="">
+                  <option value="">انتخاب کنید</option>
+                  <option {% if profile.sex == 2 %}selected{% endif %} value="2">خانم</option>
+                  <option {% if profile.sex == 1 %}selected{% endif %} value="1">آقا</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+              <div class="form-group">
+                <div class="form-group select-box">
+                  <label for="exampleSelectGender"><span class="mdi mdi-home-outline icon-sm"></span> محل زندگی</label>
+                  <select class="form-control" id="exampleSelectGender" name="ceclive" title="">
+                    <option value="">انتخاب کنید</option>
+                    <option {% if profile.live == 1 %}selected{% endif %} value="1">کرج</option>
+                    <option {% if profile.live == 2 %}selected{% endif %} value="2">تهران</option>
+                    <option {% if profile.live == 3 %}selected{% endif %} value="3">سایر</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4 col-12 mx-md-0 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-image-outline icon-sm"></span> عکس پروفایل</label>
+                <div class="file-upload">
+                  <div class="file-select">
+                    <div class="file-select-button" id="fileName">انتخاب کنید</div>
+                    <div class="file-select-name" id="noFile">هیچ فایلی انتخاب نشده است</div>
+                    <input type="file" name="cecprofileavatar" accept=".png, .jpg, .jpeg" id="chooseFile" title="">
+                  </div>
+                  <div class="d-flex ml-1">
+                    {% if profile.avatar %}
+                    <a href="{{profile.avatar.url}}" target="_blank" class="mb-0 mr-auto">{{profile.avatar}}</a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-12 mx-md-0 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-calendar-blank icon-sm"></span> تاریخ تولد</label>
+                <input type="text" name="cecbirthday" class="form-control my-border-1 observer-example erfan-persian-datepicker" id="exampleFormControlInput1" value="{% if profile.birthday %}{{profile.birthday}}{% endif %}" placeholder="کلیک کنید" title="" autocomplete="off">
+              </div>
+            </div>
+            
+            <div class="col-lg-4 col-12 mx-md-0 mx-auto">
+              <div class="form-group">
+                <label for="exampleInputName1"><span class="mdi mdi-account-card-details-outline icon-sm"></span> نام کاربری*</label>
+                <input type="text" name="cecusername" class="form-control" {% if not user.is_superuser %} disabled {% endif %} value="{{user.username}}"  title="" style="direction:ltr">
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="form-group">
+            <label for="exampleTextarea-meta"><span class="mdi mdi-comment-text-outline icon-sm"></span> درباره‌من</label>
+            <textarea class="form-control" name="cecbio" id="exampleTextarea-meta" rows="4" maxlength="300" title="" placeholder="توضیح مختصری درباره‌ی خود بنویسید ..">{% if profile.bio %}{{profile.bio}}{% endif %}</textarea>
+            <small class="form-text text-muted text-left pl-1 text-small">حداکثر 300 کاراکتر</small>
+          </div>
+
+          <button type="submit" class="btn btn-success mr-2">ذخیره تغییرات</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+{{ block.super }}
+<script src="{% static "panel/js/persian.date.js" %}"></script>
+<script src="{% static "panel/js/persian.datepicker.js" %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+   $(".erfan-persian-datepicker").pDatepicker({
+			initialValue: false,
+			viewMode: 'year',
+	    format: 'YYYY/MM/DD',
+	});
+ });
+</script>
+{% endblock %}

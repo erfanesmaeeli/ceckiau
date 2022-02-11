@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css-link %}
+{{ block.super }}
+<link rel="stylesheet" href={% static "css/team.css" %}>
+{% endblock css-link %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br class="hide-in-mobile">
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">	
+		<ol class="breadcrumb mb-0">
+			<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p> 
+			<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+			<li class="breadcrumb-item active" aria-current="page">تیم فنی</li>
+		</ol>
+	</nav>	
+</div>
+<br class="hide-in-desktop">
+<div class="cec-text-style my-2 pb-5">
+	<svg viewBox="0 0 960 200">
+		<symbol id="s-text">
+			<text text-anchor="middle" x="50%" y="80%">CEC KIAU</text>
+		</symbol>
+		<g class = "g-ants">
+			<use xlink:href="#s-text" class="text-copy"></use>
+			<use xlink:href="#s-text" class="text-copy"></use>
+			<use xlink:href="#s-text" class="text-copy"></use>
+			<use xlink:href="#s-text" class="text-copy"></use>
+			<use xlink:href="#s-text" class="text-copy"></use>
+		</g>
+	</svg>
+</div>
+<div class="container my_margin">
+<!-- Section: Team v.4 -->
+<section>
+	<!-- Grid row -->
+	<div class="row">
+
+	  {% for team in team_list %}
+			<!-- Grid column -->
+		<div class="col-lg-4 col-md-12 mb-lg-0 mb-4 mb-lg-4">
+				<!-- Rotating card -->
+				<div class="card-wrapper card-team shadow">
+				<div id="card-1" class="card card-rotating text-center">
+					<!-- Front Side -->
+					<div class="face front">
+					<!-- Cover Image -->
+					<div class="card-up">
+						<img class="card-img-top" src="{{team.cover.url}}" loading="lazy">
+					</div>
+					<!-- Avatar -->
+					<div class="avatar mx-auto white">
+						<img src="{{team.avatar.url}}" loading="lazy" alt="{{team.name}}" class="rounded-circle img-fluid"
+						alt="First sample avatar image">
+					</div>
+					<!-- Content -->
+					<div class="card-body pb-2">
+						<h4 class="font-weight-bold mt-1 mb-3">{{team.name}}</h4>
+						<p class="font-weight-normal dark-grey-text mb-2">{{team.description}}</p>
+					</div>
+					<div class="social-items pb-3">
+						{% if team.website %}
+							<a href="{{team.website}}"><i class="fa fa-globe-africa" aria-hidden="true"></i></a>
+						{% endif %}
+
+						{% if team.instagram %}
+							<a href="{{team.instagram}}"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+						{% endif %}
+
+						{% if team.telegram %}
+							<a href="{{team.telegram}}"><i class="fab fa-telegram" aria-hidden="true"></i></a>
+						{% endif %}
+
+						{% if team.twiteer %}
+							<a href="{{team.twiteer}}"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+						{% endif %}
+
+						{% if team.linkedin %}
+							<a href="{{team.linkedin}}"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+						{% endif %}
+
+						{% if team.github %}
+							<a href="{{team.github}}"><i class="fab fa-github" aria-hidden="true"></i></a>
+						{% endif %}
+						<!-- <a href=""><i class="fab fa-dribbble" aria-hidden="true"></i></a> -->
+					</div>
+					</div>
+					<!-- /Front Side -->
+				</div>
+				</div>	  
+			</div>
+	  {% endfor %}
+
+	</div>
+	<!-- Grid row -->
+  
+  </section>
+  <!-- Section: Team v.4 -->
+</div>
+{% endblock content %}

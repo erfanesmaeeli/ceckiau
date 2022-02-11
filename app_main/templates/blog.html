@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% load jformat %}
+
+{% block css-link %}
+{{ block.super }}
+<link rel="stylesheet" href={% static "css/blog.css" %}>
+{% endblock css-link %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br class="hide-in-mobile">
+<div class="container-fluid">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb mb-0">
+			<p> <i class="fa fa-caret-left" aria-hidden="true"></i> شما اینجا هستید:  &nbsp  &nbsp </p>
+			<li class="breadcrumb-item"><a href="/" class="cec-text-pyblue">خانه</a></li>
+			<li class="breadcrumb-item active" aria-current="page">بلاگ</li>
+		</ol>
+	</nav>
+</div>
+<br>
+
+{# blog title bar#}
+<div class="container-fluid">
+	<div class="introduce-cec card-panel text-center "> بلاگ </div>
+</div>
+
+<div class="container">
+
+	{# blog post card #}
+{% for post in page_obj %}
+{% if post.publish %}
+<div class="card mt-4 shadow postcard">
+  		<div class="card-body">
+    		<div class="row">
+    			<div class="col-lg-4 col-md-4 col-12 align-self-center p-0" align="center">
+    				<a href="{{ post.get_absolute_url }}">
+    					<img class="postcard_img" src="{{ post.image.url }}" loading="lazy" width="300" height="300" alt="{{ post.title }}">
+    				</a>
+    			</div>
+
+    			<div class="col-lg-8 col-md-10 col-12 pt-3 pr-4 postcard2" align="center">
+					<a href="{{ post.get_absolute_url }}">
+						<h4 class="postcard_title">{{ post.title }}</h4>
+					</a>
+					<div class="postcard_info hide-in-mobile">
+						<span class=""><i class="far fa-folder" aria-hidden="true"></i> {{ post.get_category }}</span>
+						<span class="pl-4"><i class="far fa-calendar-alt" aria-hidden="true"></i> {{ post.DateCreate | jformat:"%d / %m / %Y" }}</span>
+						<span class="pl-4"><i class="far fa-user" aria-hidden="true"></i> نویسنده: {% if post.show_author %}
+					{{ post.author_name }}
+					{% else %}
+					انجمن علمی کامپیوتر
+					{% endif %}</span>
+					</div>
+					
+					<div class="postcard_info hide-in-desktop">
+						<span class="d-block pb-2"><i class="far fa-folder" aria-hidden="true"></i> {{ post.get_category }}</span>
+						<span class="d-block pb-2"><i class="far fa-calendar-alt" aria-hidden="true"></i> {{ post.DateCreate }}</span>
+						<span class="d-block"><i class="far fa-user" aria-hidden="true"></i> نویسنده: {% if post.show_author %}
+					{{ post.author_name }}
+					{% else %}
+					انجمن علمی کامپیوتر
+					{% endif %}</span>
+					</div>
+
+
+					<p class="postcard_text mt-4">{{ post.text |striptags |safe  |truncatewords:40 }}</p>
+    			</div>
+    		</div>
+    		<div class="row postcard_btn">
+    			<a class="btn cec-btn-pyblue ml-auto mr-5 hide-in-mobile" href="{{ post.get_absolute_url }}" style="width:150px">ادامه مطلب</a>
+    			<a class="btn cec-btn-pyblue mx-auto mt-2 hide-in-desktop" href="{{ post.get_absolute_url }}" style="width:150px">ادامه مطلب</a>
+    		</div>
+  		</div>
+	</div>
+	{% endif %}
+	{% endfor %}
+
+<div class="container mt-5 d-flex">
+	<div class="row mx-auto">
+	<nav aria-label="Page navigation example">
+	  <ul class="pagination">
+
+		{% if page_obj.has_next %}
+	    	<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">صفحه بعد</a></li>
+	    {% endif %}
+
+
+		{% for page in page_obj.paginator.page_range reversed %}
+		{% if page == page_obj.number %}
+			<li class="page-item"><a class="page-link bg-secondary text-light" href="?page={{page}}">{{page}}</a></li>
+		{% else %}
+			<li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+			{% endif %}
+		{% endfor %}
+
+		{% if page_obj.has_previous %}
+	    	<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">صفحه قبل</a></li>
+	    {% endif %}
+
+
+	  </ul>
+	</nav>
+	</div>
+	</div>
+
+
+</div>
+{% endblock content %}
