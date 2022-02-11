@@ -1,5 +1,5 @@
 # CECkiau
-This is my first experience with Django.
+This is my first experience with Django & Bootstrap.
 <br>
 Developed at 2018
 <br>
