@@ -6,7 +6,7 @@ Developed at 2018
 <a href="https://www.ceckiau.ir">ceckiau.ir</a>
 
 <br>
-<h2>How to Run? </h2>
+<h2>How to Run? (Python 3.7+)</h2>
 <br>
 
 <h3>
